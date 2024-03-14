@@ -18,6 +18,11 @@ export default {
             window.setInterval(() => {
                 this.date = new Date()
             }, 1000);
+        },
+        CheckingZeroAdditionTime (getTupeDate) {
+            if (getTupeDate < 10) {
+                return "0"
+            }
         }
     }
 }
@@ -27,8 +32,8 @@ export default {
 
     <header class=" row">
         <div class="name_college col">Басовская</div>
-        <div class="time col">{{ this.date.getHours() }}:{{ this.date.getMinutes() }}:{{ this.date.getSeconds() }}</div>
-        <div class="date col">{{ this.date.getDate() }}.{{ this.date.getMonth() }}.{{ this.date.getFullYear() }}</div>
+        <div class="time col">{{ CheckingZeroAdditionTime(this.date.getHours()) }}{{ this.date.getHours() }}:{{ CheckingZeroAdditionTime(this.date.getMinutes()) }}{{ this.date.getMinutes() }}:{{ CheckingZeroAdditionTime(this.date.getSeconds()) }}{{ this.date.getSeconds() }}</div>
+        <div class="date col">{{ CheckingZeroAdditionTime(this.date.getDate()) }}{{ this.date.getDate() }}.{{ CheckingZeroAdditionTime(this.date.getMonth() + 1) }}{{ this.date.getMonth() + 1 }}.{{ this.date.getFullYear() }}</div>
     </header>
 
     <h2>Расписание <br> Звонков</h2>
