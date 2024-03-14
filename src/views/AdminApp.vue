@@ -69,8 +69,8 @@ export default {
                 </table>
 
                 <div class="cntent_table_button row">
-                    <div class="col" @click="abbTable()"><button>Добавить новое время звонка</button></div>
-                    <div class="col" @click="daliteTable()"><button>Удалить последнее время звонка</button></div>
+                    <el-button type="info" class="col" @click="abbTable()">Добавить новое время звонка</el-button>
+                    <el-button type="info" class="col" @click="daliteTable()">Удалить последнее время звонка</el-button>
                 </div>
             
             </div>

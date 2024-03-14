@@ -9,14 +9,15 @@ export default {
         }
     },
     mounted() {
-        this.startTimer ();
+        this.startTimer();
     },
     methods: {
-        
+
         startTimer() {
+
             window.setInterval(() => {
                 this.date = new Date()
-            }, 1000)
+            }, 1000);
         }
     }
 }
@@ -34,48 +35,45 @@ export default {
 
 
     <div class="schedule container">
-        <div style="display: inline-block;">
-            <div class="lesson row container text-center align-items-center">
+        <div class="lesson row container align-items-center">
 
-                <div class="num_lesson col-md-auto">
-                    1 урок
+            <div class="num_lesson col-auto">
+                1 урок
+            </div>
+            <div class="col">
+                <hr>
+            </div>
+            <div class="col-auto">
+                9:55-10:40
+            </div>
+
+        </div>
+
+        <div v-for=" i in 6">
+            <div class="change row container align-items-center ">
+                <div class="col">
+                    <hr>
+                </div>
+                <div class="col-auto"> 10 мин</div>
+                <div class="col">
+                    <hr>
+                </div>
+            </div>
+
+            <div class="lesson row container align-items-center">
+
+                <div class="num_lesson col-auto">
+                    {{ i + 1 }} урок
                 </div>
                 <div class="col">
                     <hr>
                 </div>
-                <div class="col-md-auto">
+                <div class="col-auto">
                     9:55-10:40
                 </div>
 
             </div>
-        </div>
-        <div v-for=" i in 6">
-            <div style="display: inline-block;">
-                <div class="change row container text-center align-items-center ">
-                    <div class="col">
-                        <hr>
-                    </div>
-                    <div class="col-md-auto"> 10 мин</div>
-                    <div class="col">
-                        <hr>
-                    </div>
-                </div>
-            </div>
-            <div style="display: inline-block;">
-                <div class="lesson row container text-center align-items-center">
 
-                    <div class="num_lesson col-md-auto">
-                        {{ i + 1 }} урок
-                    </div>
-                    <div class="col">
-                        <hr>
-                    </div>
-                    <div class="col-md-auto">
-                        9:55-10:40
-                    </div>
-
-                </div>
-            </div>
         </div>
     </div>
 
@@ -99,6 +97,7 @@ body {
 
 h2 {
     margin-top: 35px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
@@ -124,15 +123,35 @@ header .date {
     margin-top: 15px;
 }
 
+.lesson,
+.change {
+    min-width: 300px;
+    padding: 0 10px 0 10px;
+    margin-bottom: 1px;
+}
+ 
+.lesson .col,
+.change .col  {
+    padding: 10px;
+}
+
 .lesson {
     background-color: rgb(163, 163, 163);
-    width: 643px;
     height: 50px;
     border-radius: 16px;
 }
 
 .change {
-    width: 643px;
     height: 24px;
+}
+
+.schedule {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-content: space-around;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
 }
 </style>
