@@ -1,0 +1,20 @@
+{
+    "namePleer": "Ко-ло-ло",
+    "timeLesson": {
+        "1": {
+            "timeBeginning": "09:00",
+            "timeEnd": "09:45",
+            "сheckСall": true
+        },
+        "2": {
+            "timeBeginning": "09:55",
+            "timeEnd": "10:40",
+            "сheckСall": true
+        },
+        "3": {
+            "timeBeginning": "11:00",
+            "timeEnd": "11:45",
+            "сheckСall": true
+        }
+    }
+}
