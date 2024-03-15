@@ -30,7 +30,7 @@ export default {
 
 <template>
 
-    <header class=" row">
+    <header class="row">
         <div class="name_college col">Басовская</div>
         <div class="time col">{{ CheckingZeroAdditionTime(this.date.getHours()) }}{{ this.date.getHours() }}:{{ CheckingZeroAdditionTime(this.date.getMinutes()) }}{{ this.date.getMinutes() }}:{{ CheckingZeroAdditionTime(this.date.getSeconds()) }}{{ this.date.getSeconds() }}</div>
         <div class="date col">{{ CheckingZeroAdditionTime(this.date.getDate()) }}{{ this.date.getDate() }}.{{ CheckingZeroAdditionTime(this.date.getMonth() + 1) }}{{ this.date.getMonth() + 1 }}.{{ this.date.getFullYear() }}</div>
@@ -39,8 +39,8 @@ export default {
     <h2>Расписание <br> Звонков</h2>
 
 
-    <div class="schedule container">
-        <div class="lesson row container align-items-center">
+    <el-container class="schedule">
+        <el-row class="lesson container align-items-center">
 
             <div class="num_lesson col-auto">
                 1 урок
@@ -52,10 +52,10 @@ export default {
                 9:55-10:40
             </div>
 
-        </div>
+        </el-row>
 
         <div v-for=" i in 6">
-            <div class="change row container align-items-center ">
+            <el-row class="change container align-items-center ">
                 <div class="col">
                     <hr>
                 </div>
@@ -63,9 +63,9 @@ export default {
                 <div class="col">
                     <hr>
                 </div>
-            </div>
+            </el-row>
 
-            <div class="lesson row container align-items-center">
+            <el-row class="lesson container align-items-center">
 
                 <div class="num_lesson col-auto">
                     {{ i + 1 }} урок
@@ -77,10 +77,10 @@ export default {
                     9:55-10:40
                 </div>
 
-            </div>
+            </el-row>
 
         </div>
-    </div>
+    </el-container>
 
 </template>
 

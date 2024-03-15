@@ -56,7 +56,7 @@ export default {
                         <th>Начало звонка</th>
                         <th>Конец звонка</th>
                         <th>Включить звонок</th>
-                        <th class="input"><input v-model="allCheckСall" @click="getAllCheckСall()" type="checkbox"></th> <!--- включение и выключение всех звонков  -->
+                        <th class="input"><el-checkbox :indeterminate="isIndeterminate" v-model="allCheckСall" @click="getAllCheckСall()" type="checkbox"></el-checkbox></th> <!--- включение и выключение всех звонков  -->
                     </tr>
 
                     <tr v-for=" (x, index) in timeLesson">
