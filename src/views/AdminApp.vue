@@ -32,8 +32,14 @@ export default {
             this.meterReadingСall()
         },
         daliteTable() {
-            delete this.timeLesson[`${Object.keys(this.timeLesson).length}`]
-            this.meterReadingСall()
+            if (Object.keys(this.timeLesson).length > 1) {
+                if (this.timeLesson[`${Object.keys(this.timeLesson).length}`].сheckСall == true) {
+                    this.counterСall--
+                }
+                delete this.timeLesson[`${Object.keys(this.timeLesson).length}`]
+
+                this.meterReadingСall()
+            }
         },
 
         getAllCheckСall() {
