@@ -153,9 +153,27 @@ export default {
         },
 
         changeTime_counter(startTime, endTime) {
-            console.log(this.timeLesson);
-            console.log(startTime);
-            console.log(endTime);
+            // console.log(this.timeLesson);
+            // console.log(startTime);
+            // console.log(endTime);
+
+            // Разбиваем время на часы и минуты
+            const startParts = startTime.split(':');
+            const endParts = endTime.split(':');
+
+            // Преобразуем в минуты
+            const startMinutes = startParts[0] * 60 + parseInt(startParts[1]);
+            const endMinutes = endParts[0] * 60 + parseInt(endParts[1]);
+
+            // Вычисляем разницу
+            let difference = endMinutes - startMinutes;
+
+            // Обрабатываем отрицательную разницу
+            if (difference < 0) {
+                difference += 24 * 60;
+            }
+
+            return difference;
         },
 
         startTimer() {
@@ -166,9 +184,62 @@ export default {
         },
         CheckingZeroAdditionTime(getTupeDate) {
             if (getTupeDate < 10) {
-                return "0"
+                return "0" + getTupeDate
+            } else {
+                return getTupeDate
             }
+
+        },
+
+        color_selectionSchedule_event(index) {
+            let startTime;
+
+            if (index - 1 === -1) {
+                startTime = this.timeLesson[index].timeBeginning;
+            } else {
+                startTime = this.timeLesson[index - 1].timeEnd;
+            };
+
+            let endTime = this.timeLesson[index].timeEnd;
+
+
+            let time = `${this.CheckingZeroAdditionTime(this.date.getHours())}:${this.CheckingZeroAdditionTime(this.date.getMinutes())}`
+            // let time = `09:00`
+            
+            // console.log(startTime); //для де-багинга 
+            // console.log(endTime);
+            // console.log(time);
+            // console.log(`-`);
+
+            // Разбиваем время на часы и минуты
+            const startParts = startTime.split(':');
+            const endParts = endTime.split(':');
+            const timeParts = time.split(':');
+
+
+            // Преобразуем в минуты
+            const startMinutes = startParts[0] * 60 + parseInt(startParts[1]);
+            const endMinutes = endParts[0] * 60 + parseInt(endParts[1]);
+            const timeMinutes = timeParts[0] * 60 + parseInt(timeParts[1]);
+
+            // console.log(startMinutes);
+            // console.log(endMinutes);
+            // console.log(timeMinutes);
+
+
+            if (endMinutes <= timeMinutes) {
+                console.log("past");
+                return "past"
+            } else if (startMinutes <= timeMinutes && timeMinutes < endMinutes) {
+                console.log("active");
+                return "active"
+            } else if (startMinutes > timeMinutes) {
+                console.log("preceded");
+                return "preceded"
+            }
+            // console.log(`--------------`);
         }
+
     }
 }
 </script>
@@ -177,11 +248,11 @@ export default {
 
     <header class="row">
         <div class="name_college col">Басовская</div>
-        <div class="time col">{{ CheckingZeroAdditionTime(this.date.getHours()) }}{{ this.date.getHours() }}:{{
-            CheckingZeroAdditionTime(this.date.getMinutes()) }}{{ this.date.getMinutes() }}:{{
-            CheckingZeroAdditionTime(this.date.getSeconds()) }}{{ this.date.getSeconds() }}</div>
-        <div class="date col">{{ CheckingZeroAdditionTime(this.date.getDate()) }}{{ this.date.getDate() }}.{{
-            CheckingZeroAdditionTime(this.date.getMonth() + 1) }}{{ this.date.getMonth() + 1 }}.{{
+        <div class="time col">{{ CheckingZeroAdditionTime(this.date.getHours()) }}:{{
+            CheckingZeroAdditionTime(this.date.getMinutes()) }}:{{
+            CheckingZeroAdditionTime(this.date.getSeconds()) }}</div>
+        <div class="date col">{{ CheckingZeroAdditionTime(this.date.getDate()) }}.{{
+            CheckingZeroAdditionTime(this.date.getMonth() + 1) }}.{{
             this.date.getFullYear() }}</div>
     </header>
 
@@ -190,8 +261,8 @@ export default {
 
     <el-container class="schedule">
 
-        <div v-for=" (i, index) in timeLesson">
-            <el-row class="lesson container align-items-center">
+        <div v-for=" (i, index) in timeLesson" class="container">
+            <el-row class="lesson container align-items-center" :class="color_selectionSchedule_event(index)">
 
                 <div class="num_lesson col-auto">
                     {{ i.Lesson }} урок
@@ -209,7 +280,8 @@ export default {
                 <div class="col">
                     <hr>
                 </div>
-                <div class="col-auto"> {{ changeTime_counter(this.timeLesson[index].timeEnd, this.timeLesson[index + 1].timeBeginning)}} мин</div>
+                <div class="col-auto"> {{ changeTime_counter(this.timeLesson[index].timeEnd, this.timeLesson[index +
+            1].timeBeginning) }} мин</div>
                 <div class="col">
                     <hr>
                 </div>
@@ -272,8 +344,11 @@ header .date {
 .lesson,
 .change {
     min-width: 300px;
+    width: 100%;
     padding: 0 10px 0 10px;
     margin-bottom: 1px;
+
+    font-size: 2vw;
 }
 
 .lesson .col,
@@ -282,13 +357,15 @@ header .date {
 }
 
 .lesson {
-    background-color: rgb(163, 163, 163);
-    height: 50px;
+    color: #ffffff;
+    font-weight: 600;
+
+    height: 6vw;
     border-radius: 16px;
 }
 
 .change {
-    height: 24px;
+    height: 3vw;
 }
 
 .schedule {
@@ -299,5 +376,18 @@ header .date {
     flex-wrap: wrap;
     justify-content: center;
     align-items: stretch;
+}
+
+/* подставные класы */
+.past {
+    background-color: rgb(87, 133, 208);
+}
+
+.active {
+    background-color: rgb(0, 0, 255);
+}
+
+.preceded {
+    background-color: rgb(255, 165, 0);
 }
 </style>
