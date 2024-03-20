@@ -209,7 +209,7 @@ export default {
                 <div class="col">
                     <hr>
                 </div>
-                <div class="col-auto"> {{ changeTime_counter(this.timeLesson[index].timeEnd), this.timeLesson[index + 1].timeBeginning}} мин</div>
+                <div class="col-auto"> {{ changeTime_counter(this.timeLesson[index].timeEnd, this.timeLesson[index + 1].timeBeginning)}} мин</div>
                 <div class="col">
                     <hr>
                 </div>
@@ -220,6 +220,10 @@ export default {
     </el-container>
 
 </template>
+
+
+
+
 
 
 <style scoped>
