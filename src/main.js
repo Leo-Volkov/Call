@@ -1,8 +1,13 @@
+// Запросы к серверу
+import axios from "axios";
+axios.defaults.baseURL = 'http://call.web.op9.local/';
+
 // Всё для vue
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router.js';
 
+// Библеотека стили element
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 

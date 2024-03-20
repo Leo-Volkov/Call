@@ -1,26 +1,37 @@
 <script>
+import axios from 'axios';
 
 export default {
     data() {
         return {
             namePleers: [`Ко-ло-ло`, `Ла-лам-лам`, `ddd3`, `ddd2`, `ddd1`],
             trueNnamePleers: `Ко-ло-ло`,
-            timeLesson: {
-                "1": {
-                    timeBeginning: Date(),
-                    timeEnd: Date(),
-                    сheckСall: true
-                }
-            },
+            timeLesson: {},
             allCheckСall: false,
             counterСall: 0,
             isIndeterminate: false
+            // timeLesson: {
+            //     "1": {
+            //         timeBeginning: Date(),
+            //         timeEnd: Date(),
+            //         сheckСall: true
+            //     }
+            // },
         }
     },
     mounted() {
         this.entranceСheckCounterСall()
     },
     methods: {
+        // Работа с серваком 
+        async gap_mySQL() {
+            let response = await axios.get('/');
+            console.log(response);
+            this.timeLesson = response.data;
+
+
+        },
+
         abbTable() {
             // console.log()
             this.timeLesson[`${Object.keys(this.timeLesson).length + 1}`] = {

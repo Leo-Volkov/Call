@@ -1,30 +1,29 @@
 let express = require(`express`);
 let app = express();
-let port = 3005;
 
 app.listen(port, function () {
-    console.log(`http://localhost:${port}`);
+    console.log(`http://call.web.op9.local/`);
 });
 
 // Настройка CORS
 let cors = require('cors');
 app.use(cors({ origin: 'http://localhost:5173' }));
-
+ 
 
 // Настройка POST-запроса — JSON
 app.use(express.json());
 
 
-let notesSchema = new Schema({
-    namePleer: String,
-    timeLesson: {
-        timeBeginning: Date,
-        timeEnd: Date,
-        сheckСall: Boolean
-    }
-})
+// let notesSchema = new Schema({
+//     namePleer: String,
+//     timeLesson: {
+//         timeBeginning: Date,
+//         timeEnd: Date,
+//         сheckСall: Boolean
+//     }
+// })
 
-let Note = model('note', notesSchema);
+// let Note = model('note', notesSchema);
 
 
 // app.get('/categories/all', async function (req, res) {

@@ -24,4 +24,7 @@ export default defineComponent({
 	</el-config-provider>
 </template>
 
-<style></style>
+<style>
+
+
+</style>
