@@ -6,21 +6,67 @@ export default {
         return {
             namePleers: [`Ко-ло-ло`, `Ла-лам-лам`, `ddd3`, `ddd2`, `ddd1`],
             trueNnamePleers: `Ко-ло-ло`,
-            timeLesson: {},
+
             allCheckСall: false,
             counterСall: 0,
-            isIndeterminate: false
-            // timeLesson: {
-            //     "1": {
-            //         timeBeginning: Date(),
-            //         timeEnd: Date(),
-            //         сheckСall: true
-            //     }
-            // },
+            isIndeterminate: false,
+
+            timeLesson: [
+                {
+                    "ID": "1",
+                    "Lesson": "1",
+                    "timeBeginning": "09:00:00",
+                    "timeEnd": "09:45:00",
+                    "сheckСall": "1",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "2",
+                    "Lesson": "2",
+                    "timeBeginning": "09:55:00",
+                    "timeEnd": "10:40:00",
+                    "сheckСall": "1",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "3",
+                    "Lesson": "3",
+                    "timeBeginning": "11:00:00",
+                    "timeEnd": "11:45:00",
+                    "сheckСall": "1",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "4",
+                    "Lesson": "4",
+                    "timeBeginning": "11:55:00",
+                    "timeEnd": "12:40:00",
+                    "сheckСall": "1",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "5",
+                    "Lesson": "5",
+                    "timeBeginning": "13:00:00",
+                    "timeEnd": "13:45:00",
+                    "сheckСall": "0",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "6",
+                    "Lesson": "6",
+                    "timeBeginning": "14:05:00",
+                    "timeEnd": "14:50:00",
+                    "сheckСall": "1",
+                    "college_id": "1"
+                }
+            ],
         }
     },
     mounted() {
         this.entranceСheckCounterСall()
+        // this.taimengСreation()
+        this.gap_mySQL();
     },
     methods: {
         // Работа с серваком 
@@ -29,25 +75,44 @@ export default {
             console.log(response);
             this.timeLesson = response.data;
 
+            this.taimengСreation()
 
+        },
+
+        taimengСreation() {
+            for (let i = 0; i < this.timeLesson.length; i++) {
+                this.timeLesson[i].timeBeginning = this.timeLesson[i].timeBeginning.slice(0, 5);
+                this.timeLesson[i].timeEnd = this.timeLesson[i].timeEnd.slice(0, 5);
+                this.timeLesson[i].сheckСall = Boolean(Number(`${this.timeLesson[i].сheckСall}`));
+            }
+            console.log(this.timeLesson);
+        },
+
+        clawback_taimengСreation() {
+            for (let i = 0; i < this.timeLesson.length; i++) {
+                this.timeLesson[i].timeBeginning = this.timeLesson[i].timeBeginning + ':00'
+                this.timeLesson[i].timeEnd = this.timeLesson[i].timeEnd + ':00'
+            }
+
+            // this.timeLesson[i].сheckСall = String(Number(  ))
         },
 
         abbTable() {
             // console.log()
-            this.timeLesson[`${Object.keys(this.timeLesson).length + 1}`] = {
+            this.timeLesson.push({
                 timeBeginning: Date(),
                 timeEnd: Date(),
                 сheckСall: true
-            }
+            });
             this.counterСall++
             this.meterReadingСall()
         },
         daliteTable() {
-            if (Object.keys(this.timeLesson).length > 1) {
-                if (this.timeLesson[`${Object.keys(this.timeLesson).length}`].сheckСall == true) {
+            if (this.timeLesson.length > 0) {
+                if (this.timeLesson[this.timeLesson.length - 1].сheckСall == true) {
                     this.counterСall--
                 }
-                delete this.timeLesson[`${Object.keys(this.timeLesson).length}`]
+                this.timeLesson.pop();
 
                 this.meterReadingСall()
             }
@@ -55,16 +120,16 @@ export default {
 
         getAllCheckСall() {
             if (this.allCheckСall == true) {
-                for (let i = 1; i <= Object.keys(this.timeLesson).length; i++) {
+                for (let i = 0; i < this.timeLesson.length; i++) {
                     this.timeLesson[`${i}`] = {
                         timeBeginning: this.timeLesson[`${i}`].timeBeginning,
                         timeEnd: this.timeLesson[`${i}`].timeEnd,
                         сheckСall: true
                     };
                 };
-                this.counterСall = Object.keys(this.timeLesson).length
+                this.counterСall = this.timeLesson.length
             } else {
-                for (let i = 1; i <= Object.keys(this.timeLesson).length; i++) {
+                for (let i = 0; i < this.timeLesson.length; i++) {
                     this.timeLesson[`${i}`] = {
                         timeBeginning: this.timeLesson[`${i}`].timeBeginning,
                         timeEnd: this.timeLesson[`${i}`].timeEnd,
@@ -77,7 +142,6 @@ export default {
         },
 
         CounterСall(x) {
-            console.log(x.сheckСall);
             if (x.сheckСall == true) {
                 this.counterСall++
             } else {
@@ -88,8 +152,7 @@ export default {
         },
 
         meterReadingСall() {
-            console.log(this.counterСall);
-            let z = Object.keys(this.timeLesson).length;
+            let z = this.timeLesson.length;
             let y = this.counterСall;
 
             if (z == y) {
@@ -104,7 +167,7 @@ export default {
         },
 
         entranceСheckCounterСall() {
-            for (let i = 1; i <= Object.keys(this.timeLesson).length; i++) {
+            for (let i = 0; i < this.timeLesson.length; i++) {
                 if (this.timeLesson[`${i}`].сheckСall == true) {
                     this.counterСall++
                 }
@@ -137,10 +200,10 @@ export default {
                     </tr>
 
                     <tr v-for=" (x, index) in timeLesson">
-                        <td>{{ index }}</td>
+                        <td>{{ index + 1 }}</td>
                         <td><input v-model="x.timeBeginning" type="time"></td>
                         <td><input v-model="x.timeEnd" type="time"></td>
-                        <td><input v-model="x.сheckСall" type="checkbox" @change="CounterСall(x)"></td>
+                        <td><input v-model="x.сheckСall" type="checkbox"  @change="CounterСall(x)"></td>
                     </tr>
 
                 </table>

@@ -5,55 +5,65 @@ export default {
     data() {
         return {
             date: new Date(),
+            dateLesson: new Date(),
             timeLesson: [
-                {
-                    "ID": "1",
-                    "Lesson": "1",
-                    "timeBeginning": "09:00:00",
-                    "timeEnd": "09:45:00",
-                    "сheckСall": "1",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "2",
-                    "Lesson": "2",
-                    "timeBeginning": "09:55:00",
-                    "timeEnd": "10:40:00",
-                    "сheckСall": "1",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "3",
-                    "Lesson": "3",
-                    "timeBeginning": "11:00:00",
-                    "timeEnd": "11:45:00",
-                    "сheckСall": "1",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "4",
-                    "Lesson": "4",
-                    "timeBeginning": "11:55:00",
-                    "timeEnd": "12:40:00",
-                    "сheckСall": "1",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "5",
-                    "Lesson": "5",
-                    "timeBeginning": "13:00:00",
-                    "timeEnd": "13:45:00",
-                    "сheckСall": "1",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "6",
-                    "Lesson": "6",
-                    "timeBeginning": "14:05:00",
-                    "timeEnd": "14:50:00",
-                    "сheckСall": "1",
-                    "college_id": "1"
-                }
+                // {
+                //     "ID": "1",
+                //     "Lesson": "1",
+                //     "timeBeginning": "09:00:00",
+                //     "timeEnd": "09:45:00",
+                //     "сheckСall": "1",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "2",
+                //     "Lesson": "2",
+                //     "timeBeginning": "09:55:00",
+                //     "timeEnd": "10:40:00",
+                //     "сheckСall": "1",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "3",
+                //     "Lesson": "3",
+                //     "timeBeginning": "11:00:00",
+                //     "timeEnd": "11:45:00",
+                //     "сheckСall": "1",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "4",
+                //     "Lesson": "4",
+                //     "timeBeginning": "11:55:00",
+                //     "timeEnd": "12:40:00",
+                //     "сheckСall": "1",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "5",
+                //     "Lesson": "5",
+                //     "timeBeginning": "13:00:00",
+                //     "timeEnd": "13:45:00",
+                //     "сheckСall": "1",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "6",
+                //     "Lesson": "6",
+                //     "timeBeginning": "14:05:00",
+                //     "timeEnd": "14:50:00",
+                //     "сheckСall": "1",
+                //     "college_id": "1"
+                // }
+                // ,
+                // {
+                //     "ID": "7",
+                //     "Lesson": "7",
+                //     "timeBeginning": "15:10:00",
+                //     "timeEnd": "15:55:00",
+                //     "сheckСall": "1",
+                //     "college_id": "1"
+                // }
             ],
 
             // timeLesson: [
@@ -121,10 +131,33 @@ export default {
 
     mounted() {
         this.startTimer();
-        this.taimengСreation();
-        // this.gap_mySQL();
+        // this.taimengСreation();
+        this.gap_mySQL();
+        document.addEventListener('keydown', function (event) {
+            if (event.code == 'Space') {
+                let audio = document.querySelector("audio");
+
+                audio.volume = 0.2;
+                audio.play();
+                setTimeout(() => {
+                    audio.pause();
+                }, 7000)
+
+
+            }
+        });
     },
     methods: {
+        playAudio() {
+            let audio = document.querySelector("audio");
+
+            audio.volume = 0.2;
+            audio.play();
+            setTimeout(() => {
+                audio.pause();
+            }, 7000)
+        },
+
         // Работа с серваком 
         async gap_mySQL() {
             let response = await axios.get('/');
@@ -137,25 +170,15 @@ export default {
 
 
         taimengСreation() {
-            console.log(this.timeLesson);
+            // console.log(this.timeLesson);
             for (let i = 0; i < this.timeLesson.length; i++) {
                 this.timeLesson[i].timeBeginning = this.timeLesson[i].timeBeginning.slice(0, 5)
                 this.timeLesson[i].timeEnd = this.timeLesson[i].timeEnd.slice(0, 5)
             }
-            console.log(this.timeLesson);
-        },
-
-        clawback_taimengСreation() {
-            for (let i = 0; i < this.timeLesson.length; i++) {
-                this.timeLesson[i].timeBeginning = this.timeLesson[i].timeBeginning + ':00'
-                this.timeLesson[i].timeEnd = this.timeLesson[i].timeEnd + ':00'
-            }
+            // console.log(this.timeLesson);
         },
 
         changeTime_counter(startTime, endTime) {
-            // console.log(this.timeLesson);
-            // console.log(startTime);
-            // console.log(endTime);
 
             // Разбиваем время на часы и минуты
             const startParts = startTime.split(':');
@@ -181,6 +204,10 @@ export default {
             window.setInterval(() => {
                 this.date = new Date()
             }, 1000);
+
+            window.setInterval(() => {
+                this.dateLesson = new Date()
+            }, 60000);
         },
         CheckingZeroAdditionTime(getTupeDate) {
             if (getTupeDate < 10) {
@@ -192,6 +219,8 @@ export default {
         },
 
         color_selectionSchedule_event(index) {
+            let timeBeginning = this.timeLesson[index].timeBeginning;
+
             let startTime;
 
             if (index - 1 === -1) {
@@ -203,49 +232,42 @@ export default {
             let endTime = this.timeLesson[index].timeEnd;
 
 
-            let time = `${this.CheckingZeroAdditionTime(this.date.getHours())}:${this.CheckingZeroAdditionTime(this.date.getMinutes())}`
-            // let time = `09:00`
-            
-            // console.log(startTime); //для де-багинга 
-            // console.log(endTime);
-            // console.log(time);
-            // console.log(`-`);
+            let time = `${this.CheckingZeroAdditionTime(this.dateLesson.getHours())}:${this.CheckingZeroAdditionTime(this.dateLesson.getMinutes())}`
+            // let time = '13:00';
 
             // Разбиваем время на часы и минуты
             const startParts = startTime.split(':');
             const endParts = endTime.split(':');
             const timeParts = time.split(':');
-
+            const timeBeginningParts = timeBeginning.split(':');
 
             // Преобразуем в минуты
             const startMinutes = startParts[0] * 60 + parseInt(startParts[1]);
             const endMinutes = endParts[0] * 60 + parseInt(endParts[1]);
             const timeMinutes = timeParts[0] * 60 + parseInt(timeParts[1]);
+            const timeBeginningMinutes = timeBeginningParts[0] * 60 + parseInt(timeBeginningParts[1]);
 
-            // console.log(startMinutes);
-            // console.log(endMinutes);
-            // console.log(timeMinutes);
-
-
-            if (endMinutes <= timeMinutes) {
-                console.log("past");
-                return "past"
-            } else if (startMinutes <= timeMinutes && timeMinutes < endMinutes) {
-                console.log("active");
-                return "active"
-            } else if (startMinutes > timeMinutes) {
-                console.log("preceded");
-                return "preceded"
+            if ((timeMinutes == endMinutes || timeMinutes == timeBeginningMinutes) && this.timeLesson[index].сheckСall == "1") {
+                this.playAudio()
             }
-            // console.log(`--------------`);
-        }
+
+            switch (true) {
+                case endMinutes <= timeMinutes:
+                    return 'past';
+                case startMinutes <= timeMinutes && timeMinutes < endMinutes:
+                    return 'active';
+                case startMinutes > timeMinutes:
+                    return "planet";
+            }
+
+        },
 
     }
 }
 </script>
 
 <template>
-
+    <audio src="https://www.bensound.com/bensound-music/bensound-moose.mp3"></audio>
     <header class="row">
         <div class="name_college col">Басовская</div>
         <div class="time col">{{ CheckingZeroAdditionTime(this.date.getHours()) }}:{{
@@ -262,10 +284,11 @@ export default {
     <el-container class="schedule">
 
         <div v-for=" (i, index) in timeLesson" class="container">
+
             <el-row class="lesson container align-items-center" :class="color_selectionSchedule_event(index)">
 
                 <div class="num_lesson col-auto">
-                    {{ i.Lesson }} урок
+                    {{ i.ID }} урок
                 </div>
                 <div class="col">
                     <hr>
@@ -276,7 +299,7 @@ export default {
 
             </el-row>
 
-            <el-row v-if="i.Lesson != this.timeLesson.length" class="change container align-items-center ">
+            <el-row v-if="i.ID != this.timeLesson.length" class="change container align-items-center ">
                 <div class="col">
                     <hr>
                 </div>
@@ -286,9 +309,10 @@ export default {
                     <hr>
                 </div>
             </el-row>
-
-
         </div>
+
+        <button type="button" class="btn btn-secondary" @click="playAudio()"
+            style="margin: 20px; height: 6vw; font-size: 2vw;">Звонков</button>
     </el-container>
 
 </template>
@@ -309,11 +333,11 @@ body {
     height: 768px;
     max-width: 750px;
     margin: auto;
-    border: 4px solid rgb(219, 43, 43);
 
 }
 
 h2 {
+    font-size: 4vw;
     margin-top: 35px;
     margin-bottom: 20px;
     text-align: center;
@@ -321,15 +345,17 @@ h2 {
 
 header {
     margin: 10px;
+    margin-top: 20px;
+
 }
 
 header div {
-    font-size: 20px;
+    font-size: 2.7vw;
 }
 
 header .time {
     text-align: center;
-    font-size: 30px;
+    font-size: 3.5vw;
 }
 
 header .date {
@@ -387,7 +413,7 @@ header .date {
     background-color: rgb(0, 0, 255);
 }
 
-.preceded {
+.planet {
     background-color: rgb(255, 165, 0);
 }
 </style>
