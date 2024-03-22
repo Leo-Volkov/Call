@@ -61,6 +61,7 @@ export default {
                     "college_id": "1"
                 }
             ],
+            
         }
     },
     mounted() {
@@ -78,7 +79,9 @@ export default {
             this.taimengСreation()
 
         },
+        async save_mySQL() {
 
+        }, 
         taimengСreation() {
             for (let i = 0; i < this.timeLesson.length; i++) {
                 this.timeLesson[i].timeBeginning = this.timeLesson[i].timeBeginning.slice(0, 5);
@@ -227,6 +230,12 @@ export default {
             </div>
         </div>
     </div>
+    <div class="button_save">
+        <button type="button" class="btn btn-secondary" @click="save_mySQL()">
+            Сохранить
+        </button>
+    </div>
+    
 </template>
 
 
@@ -293,6 +302,13 @@ h3 {
     display: flex;
 }
 
+.button_save {
+    display: flex;
+}
+
+.button_save button {
+
+}
 
 @media (max-width: 768px) {
     .radio_form-check {

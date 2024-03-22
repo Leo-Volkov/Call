@@ -9,125 +9,64 @@ export default {
             timeLesson: [
                 // {
                 //     "ID": "1",
-                //     "Lesson": "1",
                 //     "timeBeginning": "09:00:00",
                 //     "timeEnd": "09:45:00",
                 //     "сheckСall": "1",
+                //     "melody": "",
                 //     "college_id": "1"
                 // },
                 // {
                 //     "ID": "2",
-                //     "Lesson": "2",
                 //     "timeBeginning": "09:55:00",
                 //     "timeEnd": "10:40:00",
                 //     "сheckСall": "1",
+                //      melody": "",
                 //     "college_id": "1"
                 // },
                 // {
                 //     "ID": "3",
-                //     "Lesson": "3",
                 //     "timeBeginning": "11:00:00",
                 //     "timeEnd": "11:45:00",
                 //     "сheckСall": "1",
+                //     "melody": "",
                 //     "college_id": "1"
                 // },
                 // {
                 //     "ID": "4",
-                //     "Lesson": "4",
                 //     "timeBeginning": "11:55:00",
                 //     "timeEnd": "12:40:00",
                 //     "сheckСall": "1",
+                //     "melody": "",
                 //     "college_id": "1"
                 // },
                 // {
                 //     "ID": "5",
-                //     "Lesson": "5",
                 //     "timeBeginning": "13:00:00",
                 //     "timeEnd": "13:45:00",
                 //     "сheckСall": "1",
+                //     "melody": "",
                 //     "college_id": "1"
                 // },
                 // {
                 //     "ID": "6",
-                //     "Lesson": "6",
                 //     "timeBeginning": "14:05:00",
                 //     "timeEnd": "14:50:00",
                 //     "сheckСall": "1",
+                //     "melody": "",
                 //     "college_id": "1"
                 // }
                 // ,
                 // {
                 //     "ID": "7",
-                //     "Lesson": "7",
                 //     "timeBeginning": "15:10:00",
                 //     "timeEnd": "15:55:00",
                 //     "сheckСall": "1",
+                //     "melody": "",
                 //     "college_id": "1"
                 // }
             ],
-
-            // timeLesson: [
-            //     {
-            //         Lesson: 1
-            //         timeBeginning: Date(),
-            //         timeEnd: Date(),
-            //         сheckСall: true,
-            //         college_id: 1, //Индекс колледжа
-            //     }
-            // ],
         }
     },
-
-    // [
-    //   {
-    //     "ID": "1",
-    //     "Lesson": "1",
-    //     "timeBeginning": "00:00:00",
-    //     "timeEnd": "00:00:00",
-    //     "сheckСall": "1",
-    //     "college_id": "1"
-    //   },
-    //   {
-    //     "ID": "2",
-    //     "Lesson": "2",
-    //     "timeBeginning": "00:00:00",
-    //     "timeEnd": "00:00:00",
-    //     "сheckСall": "1",
-    //     "college_id": "1"
-    //   },
-    //   {
-    //     "ID": "3",
-    //     "Lesson": "3",
-    //     "timeBeginning": "00:00:00",
-    //     "timeEnd": "00:00:00",
-    //     "сheckСall": "1",
-    //     "college_id": "1"
-    //   },
-    //   {
-    //     "ID": "4",
-    //     "Lesson": "4",
-    //     "timeBeginning": "00:00:00",
-    //     "timeEnd": "00:00:00",
-    //     "сheckСall": "1",
-    //     "college_id": "1"
-    //   },
-    //   {
-    //     "ID": "5",
-    //     "Lesson": "5",
-    //     "timeBeginning": "00:00:00",
-    //     "timeEnd": "00:00:00",
-    //     "сheckСall": "1",
-    //     "college_id": "1"
-    //   },
-    //   {
-    //     "ID": "6",
-    //     "Lesson": "6",
-    //     "timeBeginning": "00:00:00",
-    //     "timeEnd": "00:00:00",
-    //     "сheckСall": "1",
-    //     "college_id": "1"
-    //   }
-    // ]
 
     mounted() {
         this.startTimer();
@@ -139,11 +78,6 @@ export default {
 
                 audio.volume = 0.2;
                 audio.play();
-                setTimeout(() => {
-                    audio.pause();
-                }, 7000)
-
-
             }
         });
     },
@@ -151,11 +85,8 @@ export default {
         playAudio() {
             let audio = document.querySelector("audio");
 
-            audio.volume = 0.2;
-            audio.play();
-            setTimeout(() => {
-                audio.pause();
-            }, 7000)
+                audio.volume = 0.2;
+                audio.play();
         },
 
         // Работа с серваком 
@@ -260,14 +191,18 @@ export default {
                     return "planet";
             }
 
-        },
+        }
 
     }
 }
 </script>
 
 <template>
-    <audio src="https://www.bensound.com/bensound-music/bensound-moose.mp3"></audio>
+    <!-- https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3  - колокольчик --> 
+    <!-- https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3  - спокойный -->
+    <!-- https://alexbruni.ru/afx/sound_file/korotkiy-zvonok-shkolnogo-zvonka-35.mp3              - класичиский -->
+
+    <audio src="https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3"></audio>
     <header class="row">
         <div class="name_college col">Басовская</div>
         <div class="time col">{{ CheckingZeroAdditionTime(this.date.getHours()) }}:{{
@@ -312,7 +247,7 @@ export default {
         </div>
 
         <button type="button" class="btn btn-secondary" @click="playAudio()"
-            style="margin: 20px; height: 6vw; font-size: 2vw;">Звонков</button>
+            style="margin: 20px; height: 6vw; font-size: 2vw;">Звонить</button>
     </el-container>
 
 </template>
