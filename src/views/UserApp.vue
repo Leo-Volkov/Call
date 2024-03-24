@@ -17,10 +17,9 @@ export default {
 
         document.addEventListener('keydown', function (event) {
             if (event.code == 'Space') {
-                this.playAudio()
-                // let audio = document.querySelector("audio");
-                // audio.volume = 0.2;
-                // audio.play();
+                let audio = document.querySelector("audio");
+                audio.volume = 0.2;
+                audio.play();
             };
         });
     },
