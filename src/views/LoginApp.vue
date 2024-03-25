@@ -74,7 +74,7 @@ form {
     padding: 1.5rem 2rem;
     background: hsl(0, 0%, 100%);
     max-width: 450px;
-    width: 150vw;
+    width: 87vw;
     display: flex;
     flex-direction: column;
     box-shadow: 0 1px 10px -8px currentColor;
