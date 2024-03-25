@@ -11,13 +11,70 @@ export default {
             counterСall: 0,
             isIndeterminate: false,
 
-            timeLesson: [],
+            timeLesson: [
+            {
+                    "ID": "1",
+                    "timeBeginning": "09:00:00",
+                    "timeEnd": "09:45:00",
+                    "сheckСall": "1",
+                    "melody": "Ко-ло-ло",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "2",
+                    "timeBeginning": "09:55:00",
+                    "timeEnd": "10:40:00",
+                    "сheckСall": "1",
+                    "melody": "Ко-ло-ло",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "3",
+                    "timeBeginning": "11:00:00",
+                    "timeEnd": "11:45:00",
+                    "сheckСall": "1",
+                    "melody": "Ко-ло-ло",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "4",
+                    "timeBeginning": "11:55:00",
+                    "timeEnd": "12:40:00",
+                    "сheckСall": "1",
+                    "melody": "Ко-ло-ло",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "5",
+                    "timeBeginning": "13:00:00",
+                    "timeEnd": "13:45:00",
+                    "сheckСall": "1",
+                    "melody": "Ко-ло-ло",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "6",
+                    "timeBeginning": "14:05:00",
+                    "timeEnd": "14:50:00",
+                    "сheckСall": "1",
+                    "melody": "Ко-ло-ло",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "7",
+                    "timeBeginning": "15:10:00",
+                    "timeEnd": "15:55:00",
+                    "сheckСall": "1",
+                    "melody": "Ко-ло-ло",
+                    "college_id": "1"
+                }
+            ],
         }
     },
     mounted() {
         this.entranceСheckCounterСall();
-        // this.received_formattingData();
-        this.add_mySQL();
+        this.received_formattingData();
+        // this.add_mySQL();
     },
     methods: {
 
@@ -83,6 +140,15 @@ export default {
 
                 this.meterReadingСall();
             };
+        },
+
+        changelPayer(x) {
+            console.log(x);
+
+            for (let i = 0; i < this.timeLesson.length; i++) {
+                this.timeLesson[i].melody = x;
+            };
+            console.log(this.timeLesson);
         },
 
         getAllCheckСall() {
@@ -172,7 +238,7 @@ export default {
                                     @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
                         </tr>
 
-                        <tr v-for=" (x, index) in timeLesson">
+                        <tr v-for=" (x, index) in timeLesson" :key="timeLesson.ID">
                             <td>{{ index + 1 }}</td>
                             <td><input name="timeBeginning" v-model="x.timeBeginning" type="time"></td>
                             <td><input name="timeEnd" v-model="x.timeEnd" type="time"></td>
@@ -198,7 +264,8 @@ export default {
                 <h3>Выбрать мелодию</h3>
 
                 <el-radio-group class="radio_form-check" v-model="this.trueNnamePleers">
-                    <el-radio name="melody" class="form-check" v-for=" x in namePleers" :value="x" size="large" border>
+                    <el-radio name="melody" class="form-check" v-for=" x in namePleers"
+                     :value="x" size="large" @click="changelPayer(x)" border>
                         {{ x }}
                     </el-radio>
                 </el-radio-group>

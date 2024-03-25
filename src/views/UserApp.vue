@@ -6,14 +6,73 @@ export default {
         return {
             date: new Date(),
             dateLesson: new Date(),
-            timeLesson: [],
+            trueNnamePleers: '',
+
+            timeLesson: [
+                {
+                    "ID": "1",
+                    "timeBeginning": "09:00:00",
+                    "timeEnd": "09:45:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "2",
+                    "timeBeginning": "09:55:00",
+                    "timeEnd": "10:40:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "3",
+                    "timeBeginning": "11:00:00",
+                    "timeEnd": "11:45:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "4",
+                    "timeBeginning": "11:55:00",
+                    "timeEnd": "12:40:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "5",
+                    "timeBeginning": "13:00:00",
+                    "timeEnd": "13:45:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "6",
+                    "timeBeginning": "14:05:00",
+                    "timeEnd": "14:50:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "7",
+                    "timeBeginning": "15:10:00",
+                    "timeEnd": "15:55:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
+                }
+            ],
         }
     },
 
     mounted() {
         this.startTimer();
-        // this.received_formattingData();
-        this.add_mySQL();
+        this.received_formattingData();
+        // this.add_mySQL();
 
         document.addEventListener('keydown', function (event) {
             if (event.code == 'Space') {
@@ -44,6 +103,8 @@ export default {
                 this.timeLesson[i].timeBeginning = this.timeLesson[i].timeBeginning.slice(0, 5);
                 this.timeLesson[i].timeEnd = this.timeLesson[i].timeEnd.slice(0, 5);
             };
+            this.trueNnamePleers = this.timeLesson[0].melody
+            console.log(this.trueNnamePleers);
         },
 
         changeTime_counter(startTime, endTime) {
@@ -148,7 +209,7 @@ export default {
         <div class="date col">
             {{ CheckingZeroAdditionTime(this.date.getDate()) }}.
             {{ CheckingZeroAdditionTime(this.date.getMonth() + 1) }}.
-            {{this.date.getFullYear() }}
+            {{ this.date.getFullYear() }}
         </div>
     </header>
 
@@ -176,7 +237,8 @@ export default {
                     <hr>
                 </div>
                 <div class="col-auto">
-                    {{ changeTime_counter(this.timeLesson[index].timeEnd, this.timeLesson[index + 1].timeBeginning) }} мин
+                    {{ changeTime_counter(this.timeLesson[index].timeEnd, this.timeLesson[index + 1].timeBeginning) }}
+                    мин
                 </div>
                 <div class="col">
                     <hr>
@@ -184,9 +246,8 @@ export default {
             </el-row>
         </div>
 
-        <button type="button" class="btn btn-secondary" @click="playAudio()"
-            style="margin: 20px; height: 6vw; font-size: 2vw;">
-                Звонить
+        <button type="button" class="button_call btn btn-secondary" @click="playAudio()">
+            Звонить
         </button>
     </el-container>
 
@@ -194,7 +255,7 @@ export default {
     <!-- https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3  - колокольчик -->
     <!-- https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3  - спокойный -->
     <!-- https://alexbruni.ru/afx/sound_file/korotkiy-zvonok-shkolnogo-zvonka-35.mp3              - класичиский -->
-    <audio src="https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3"></audio>
+    <audio :src="this.trueNnamePleers"></audio>
 </template>
 
 
@@ -216,7 +277,7 @@ body {
 }
 
 h2 {
-    font-size: 4vw;
+    font-size: 4vh;
     margin-top: 35px;
     margin-bottom: 20px;
     text-align: center;
@@ -228,12 +289,12 @@ header {
 }
 
 header div {
-    font-size: 2.7vw;
+    font-size: 2.7vh;
 }
 
 header .time {
     text-align: center;
-    font-size: 3.5vw;
+    font-size: 3.5vh;
 }
 
 header .date {
@@ -251,7 +312,7 @@ header .date {
     width: 100%;
     padding: 0 10px 0 10px;
     margin-bottom: 1px;
-    font-size: 2vw;
+    font-size: 2vh;
 }
 
 .lesson .col,
@@ -262,12 +323,12 @@ header .date {
 .lesson {
     color: #ffffff;
     font-weight: 600;
-    height: 6vw;
+    height: 6vh;
     border-radius: 16px;
 }
 
 .change {
-    height: 3vw;
+    height: 3vh;
 }
 
 .schedule {
@@ -280,6 +341,12 @@ header .date {
     align-items: stretch;
 }
 
+.button_call {
+    margin: 20px;
+    height: 6vh;
+    font-size: 2vw;
+}
+
 /* подставные класы */
 .past {
     background-color: rgb(87, 133, 208);
@@ -290,6 +357,6 @@ header .date {
 }
 
 .planet {
-    background-color: rgb(255, 165, 0);
+    background-color: rgb(255, 145, 0);
 }
 </style>
