@@ -31,4 +31,15 @@ foreach ($data as $row) {
 // Ответ серверу
 echo json_encode(["Schedule" => true]);
 
+
+// Получение пароль из запроса
+$password = json_decode(file_get_contents("/verification"), true);
+// $password = password_hash($password, PASSWORD_DEFAULT);
+
+if ($password == "123") {
+  echo json_encode(['success' => true]);
+} else {
+  echo json_encode(['success' => false]);
+}
+
 ?>
