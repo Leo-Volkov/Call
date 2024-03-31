@@ -80,7 +80,7 @@ export default {
 
         // Работа с серваком 
         async add_mySQL() {
-            let response = await axios.get('/');
+            let response = await axios.get('/add_mySQL.php');
 
             this.timeLesson = response.data;
             console.log(response);

@@ -89,7 +89,7 @@ export default {
 
         // Работа с серваком 
         async add_mySQL() {
-            let response = await axios.get('/app_mySQL.php');
+            let response = await axios.get('/add_mySQL.php');
             console.log(response);
             this.timeLesson = response.data;
 
@@ -277,7 +277,7 @@ body {
 }
 
 h2 {
-    font-size: 4vh;
+    font-size: 3vw;
     margin-top: 35px;
     margin-bottom: 20px;
     text-align: center;
@@ -289,12 +289,12 @@ header {
 }
 
 header div {
-    font-size: 2.7vh;
+    font-size: 2vw;
 }
 
 header .time {
     text-align: center;
-    font-size: 3.5vh;
+    font-size: 2.6vw;
 }
 
 header .date {
