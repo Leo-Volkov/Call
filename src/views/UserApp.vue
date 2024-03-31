@@ -77,7 +77,6 @@ export default {
         document.addEventListener('keydown', function (event) {
             if (event.code == 'Space') {
                 let audio = document.querySelector("audio");
-                audio.volume = 0.2;
                 audio.play();
             };
         });
@@ -85,13 +84,12 @@ export default {
     methods: {
         playAudio() {
             let audio = document.querySelector("audio");
-            audio.volume = 0.2;
             audio.play();
         },
 
         // Работа с серваком 
         async add_mySQL() {
-            let response = await axios.get('/');
+            let response = await axios.get('/app_mySQL.php');
             console.log(response);
             this.timeLesson = response.data;
 
@@ -255,7 +253,9 @@ export default {
     <!-- https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3  - колокольчик -->
     <!-- https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3  - спокойный -->
     <!-- https://alexbruni.ru/afx/sound_file/korotkiy-zvonok-shkolnogo-zvonka-35.mp3              - класичиский -->
-    <audio :src="this.trueNnamePleers"></audio>
+    <!-- <audio :src="this.trueNnamePleers"></audio> -->
+    <audio src="https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3"></audio>
+
 </template>
 
 

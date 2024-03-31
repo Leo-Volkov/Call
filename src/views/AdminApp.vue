@@ -12,7 +12,7 @@ export default {
             isIndeterminate: false,
 
             timeLesson: [
-            {
+                {
                     "ID": "1",
                     "timeBeginning": "09:00:00",
                     "timeEnd": "09:45:00",
@@ -92,7 +92,7 @@ export default {
             this.clawback_formattingData();
 
             // Отправка данных на сервер
-            axios.post("/save", this.timeLesson).then((response) => {
+            axios.post("/save_mySQL.php", this.timeLesson).then((response) => {
 
                 // Обработка ответа сервера
                 response.data.success ?
@@ -220,7 +220,7 @@ export default {
 <template>
     <h1>Админка</h1>
 
-    <form action="http://localhost/index.php">
+    <form>
         <div class="row">
             <div class="col">
                 <h3>Расписание</h3>
@@ -264,8 +264,8 @@ export default {
                 <h3>Выбрать мелодию</h3>
 
                 <el-radio-group class="radio_form-check" v-model="this.trueNnamePleers">
-                    <el-radio name="melody" class="form-check" v-for=" x in namePleers"
-                     :value="x" size="large" @click="changelPayer(x)" border>
+                    <el-radio name="melody" class="form-check" v-for=" x in namePleers" :value="x" size="large"
+                        @click="changelPayer(x)" border>
                         {{ x }}
                     </el-radio>
                 </el-radio-group>

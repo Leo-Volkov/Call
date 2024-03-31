@@ -1,6 +1,5 @@
 <script>
 import axios from 'axios';
-import router from '../router.js';
 
 
 export default {
@@ -14,38 +13,22 @@ export default {
         }
     },
     methods: {
-        /*
-         async save_mySQL() {
-            this.clawback_formattingData();
-
-            // Отправка данных на сервер
-            axios.post("/save", this.timeLesson).then((response) => {
-
-                // Обработка ответа сервера
-                response.data.success ?
-                    console.log("Данные успешно обновлены!") :
-                    console.log("Ошибка:", response.data.error);
-            });
+         async post_verification() {
+            let response = await axios.post(`/post_verification.php?value_password=${this.value_password}`);
+            if (response.data) {
+                router.push('/admin');
+            } else {
+                this.verification_password = true;
+            };
         },
-        */
-        click_ShowOrHide_password(type) {
+
+        click_ShowOrHide_password() {
             if (this.type_ShowOrHide_password == "password") {
                 this.type_ShowOrHide_password = "text";
                 this.img_ShowOrHide_password = "https://cdn-icons-png.flaticon.com/512/158/158746.png";
             } else {
                 this.type_ShowOrHide_password = "password";
                 this.img_ShowOrHide_password = "https://cdn-icons-png.flaticon.com/512/7794/7794218.png";
-            };
-        },
-
-        verification() {
-            console.log(this.value_password);
-            if (this.value_password === "123321") {
-                console.log("OK");
-                router.push('/admin');
-            } else {
-                this.verification_password = true;
-                console.log("No");
             };
         },
 
@@ -64,12 +47,12 @@ export default {
 <template>
     <div class="form_center">
         <form>
-            <label for="userPassword" class="form-label">Пароль:</label>
+            <label class="form-label">Пароль:</label>
             <samp class="form_flax">
-                <input :type="type_ShowOrHide_password" class="form-control" name="userPassword" id="userPassword"
+                <input :type="type_ShowOrHide_password" class="form-control" 
                     placeholder="*******" v-model="this.value_password" @input="value_inputLength()">
                 <button class="button_ShowOrHide_password btn btn-secondary" type="button"
-                    @click="click_ShowOrHide_password(this.type)">
+                    @click="click_ShowOrHide_password()">
                     <img :src="img_ShowOrHide_password" alt="Показать/скрыть пароль">
                 </button>
             </samp>
@@ -78,7 +61,7 @@ export default {
             </div>
             <div style="display: flex; align-items: center; justify-content: center;">
                 <button class="verification btn" :class="[this.active_button ? `btn-primary` : `btn-secondary`]"
-                    :disabled="!this.active_button" type="button" @click="verification()">
+                    :disabled="!this.active_button" type="button" @click="post_verification()">
                     К админке
                 </button>
             </div>

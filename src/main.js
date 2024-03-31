@@ -1,7 +1,7 @@
 // Запросы к серверу
 import axios from "axios";
 // axios.defaults.baseURL = 'http://call.web.op9.local/';
-axios.defaults.baseURL = 'http://localhost/index.php';
+axios.defaults.baseURL = 'http://localhost/';
 
 // Всё для vue
 import { createApp } from 'vue'
