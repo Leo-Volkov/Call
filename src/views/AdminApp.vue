@@ -81,10 +81,8 @@ export default {
         // Работа с серваком 
         async add_mySQL() {
             let response = await axios.get('/add_mySQL.php');
-
             this.timeLesson = response.data;
             console.log(response);
-
             this.received_formattingData();
         },
 
@@ -95,35 +93,37 @@ export default {
             axios.post("/save_mySQL.php", this.timeLesson).then((response) => {
 
                 // Обработка ответа сервера
-                response.data.success ?
-                    console.log("Данные успешно обновлены!") :
-                    console.log("Ошибка:", response.data.error);
+                response.data.success
+                    ? console.log("Данные успешно обновлены!")
+                    : console.log("Ошибка:", response.data.error);
             });
         },
 
         received_formattingData() {
-            for (let i = 0; i < this.timeLesson.length; i++) {
-                this.timeLesson[i].timeBeginning = this.timeLesson[i].timeBeginning.slice(0, 5);
-                this.timeLesson[i].timeEnd = this.timeLesson[i].timeEnd.slice(0, 5);
-                this.timeLesson[i].сheckСall = Boolean(Number(`${this.timeLesson[i].сheckСall}`));
-            };
-
+            this.timeLesson.forEach(element => {
+                element.timeBeginning = element.timeBeginning.slice(0, 5);
+                element.timeEnd = element.timeEnd.slice(0, 5);
+                element.сheckСall = Boolean(Number(`${element.сheckСall}`));
+            });
             console.log(this.timeLesson);
         },
 
         clawback_formattingData() {
-            for (let i = 0; i < this.timeLesson.length; i++) {
-                this.timeLesson[i].timeBeginning = this.timeLesson[i].timeBeginning + ':00';
-                this.timeLesson[i].timeEnd = this.timeLesson[i].timeEnd + ':00';
-                this.timeLesson[i].сheckСall = String(Number(this.timeLesson[i].сheckСall));
-            };
+            this.timeLesson.forEach(element => {
+                element.timeBeginning = element.timeBeginning + ':00';
+                element.timeEnd = element.timeEnd + ':00';
+                element.сheckСall = String(Number(element.сheckСall));
+            });
         },
 
         abbTable() {
             this.timeLesson.push({
-                timeBeginning: Date(),
-                timeEnd: Date(),
-                сheckСall: true
+                ID: String(this.timeLesson.length),
+                timeBeginning: `00:00`,
+                timeEnd: `00:00`,
+                сheckСall: true,
+                melody: this.trueNnamePleers,
+                college_id: "1"
             });
 
             this.counterСall++
@@ -145,9 +145,9 @@ export default {
         changelPayer(x) {
             console.log(x);
 
-            for (let i = 0; i < this.timeLesson.length; i++) {
-                this.timeLesson[i].melody = x;
-            };
+            this.timeLesson.forEach(element => {
+                element.melody = x;
+            });
             console.log(this.timeLesson);
         },
 

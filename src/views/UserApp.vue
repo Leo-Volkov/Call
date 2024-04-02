@@ -97,10 +97,10 @@ export default {
         },
 
         received_formattingData() {
-            for (let i = 0; i < this.timeLesson.length; i++) {
-                this.timeLesson[i].timeBeginning = this.timeLesson[i].timeBeginning.slice(0, 5);
-                this.timeLesson[i].timeEnd = this.timeLesson[i].timeEnd.slice(0, 5);
-            };
+            this.timeLesson.forEach(element => {
+                element.timeBeginning = element.timeBeginning.slice(0, 5);
+                element.timeEnd = element.timeEnd.slice(0, 5);
+            });
             this.trueNnamePleers = this.timeLesson[0].melody
             console.log(this.trueNnamePleers);
         },
@@ -147,9 +147,9 @@ export default {
         timeEventListener_calls(index) {
             let timeBeginning = this.timeLesson[index].timeBeginning;
             let startTime;
-            index - 1 === -1 ?
-                startTime = this.timeLesson[index].timeBeginning :
-                startTime = this.timeLesson[index - 1].timeEnd;
+            index - 1 === -1
+                ? startTime = this.timeLesson[index].timeBeginning
+                : startTime = this.timeLesson[index - 1].timeEnd;
             let endTime = this.timeLesson[index].timeEnd;
 
             // Настоящее время

@@ -34,9 +34,9 @@ export default {
         },
 
         value_inputLength() {
-            this.value_password.length >= 6 ?
-                this.active_button = true :
-                this.active_button = false;
+            this.value_password.length >= 6
+                ? this.active_button = true
+                : this.active_button = false;
         }
     }
 };
