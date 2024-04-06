@@ -9,70 +9,70 @@ export default {
             trueNnamePleers: '',
 
             timeLesson: [
-                {
-                    "ID": "1",
-                    "timeBeginning": "09:00:00",
-                    "timeEnd": "09:45:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "2",
-                    "timeBeginning": "09:55:00",
-                    "timeEnd": "10:40:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "3",
-                    "timeBeginning": "11:00:00",
-                    "timeEnd": "11:45:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "4",
-                    "timeBeginning": "11:55:00",
-                    "timeEnd": "12:40:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "5",
-                    "timeBeginning": "13:00:00",
-                    "timeEnd": "13:45:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "6",
-                    "timeBeginning": "14:05:00",
-                    "timeEnd": "14:50:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "7",
-                    "timeBeginning": "15:10:00",
-                    "timeEnd": "15:55:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                }
+                // {
+                //     "ID": "1",
+                //     "timeBeginning": "09:00:00",
+                //     "timeEnd": "09:45:00",
+                //     "сheckСall": "1",
+                //     "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "2",
+                //     "timeBeginning": "09:55:00",
+                //     "timeEnd": "10:40:00",
+                //     "сheckСall": "1",
+                //     "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "3",
+                //     "timeBeginning": "11:00:00",
+                //     "timeEnd": "11:45:00",
+                //     "сheckСall": "1",
+                //     "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "4",
+                //     "timeBeginning": "11:55:00",
+                //     "timeEnd": "12:40:00",
+                //     "сheckСall": "1",
+                //     "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "5",
+                //     "timeBeginning": "13:00:00",
+                //     "timeEnd": "13:45:00",
+                //     "сheckСall": "1",
+                //     "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "6",
+                //     "timeBeginning": "14:05:00",
+                //     "timeEnd": "14:50:00",
+                //     "сheckСall": "1",
+                //     "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                //     "college_id": "1"
+                // },
+                // {
+                //     "ID": "7",
+                //     "timeBeginning": "15:10:00",
+                //     "timeEnd": "15:55:00",
+                //     "сheckСall": "1",
+                //     "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                //     "college_id": "1"
+                // }
             ],
         }
     },
 
     mounted() {
         this.startTimer();
-        this.received_formattingData();
-        // this.add_mySQL();
+        // this.received_formattingData();
+        this.add_mySQL();
 
         document.addEventListener('keydown', function (event) {
             if (event.code == 'Space') {
@@ -234,7 +234,7 @@ export default {
                 <div class="col">
                     <hr>
                 </div>
-                <div class="col-auto">
+                <div class="peremena_text col-auto">
                     {{ changeTime_counter(this.timeLesson[index].timeEnd, this.timeLesson[index + 1].timeBeginning) }}
                     мин
                 </div>
@@ -244,9 +244,9 @@ export default {
             </el-row>
         </div>
 
-        <button type="button" class="button_call btn btn-secondary" @click="playAudio()">
+        <!-- <button type="button" class="button_call btn btn-secondary" @click="playAudio()">
             Звонить
-        </button>
+        </button> -->
     </el-container>
 
     <!-- Проигрователь музыки -->
@@ -254,7 +254,7 @@ export default {
     <!-- https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3  - спокойный -->
     <!-- https://alexbruni.ru/afx/sound_file/korotkiy-zvonok-shkolnogo-zvonka-35.mp3              - класичиский -->
     <!-- <audio :src="this.trueNnamePleers"></audio> -->
-    <audio src="https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3"></audio>
+    <audio src="https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3"></audio>
 
 </template>
 
@@ -277,7 +277,7 @@ body {
 }
 
 h2 {
-    font-size: 3vw;
+    font-size: 3vh;
     margin-top: 35px;
     margin-bottom: 20px;
     text-align: center;
@@ -289,12 +289,12 @@ header {
 }
 
 header div {
-    font-size: 2vw;
+    font-size: 2vh;
 }
 
 header .time {
     text-align: center;
-    font-size: 2.6vw;
+    font-size: 2.6vh;
 }
 
 header .date {
@@ -318,6 +318,10 @@ header .date {
 .lesson .col,
 .change .col {
     padding: 10px;
+}
+
+.peremena_text {
+    font-size: 1.5vh;
 }
 
 .lesson {
@@ -353,10 +357,10 @@ header .date {
 }
 
 .active {
-    background-color: rgb(0, 0, 255);
+    background-color: rgb(255, 145, 0);
 }
 
 .planet {
-    background-color: rgb(255, 145, 0);
+    background-color: rgb(0, 0, 255);
 }
 </style>

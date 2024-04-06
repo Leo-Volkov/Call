@@ -72,9 +72,9 @@ export default {
         }
     },
     mounted() {
+        this.add_mySQL();
+        // this.received_formattingData();
         this.entranceСheckCounterСall();
-        this.received_formattingData();
-        // this.add_mySQL();
     },
     methods: {
 
@@ -91,12 +91,14 @@ export default {
 
             // Отправка данных на сервер
             axios.post("/save_mySQL.php", this.timeLesson).then((response) => {
-
                 // Обработка ответа сервера
                 response.data.success
                     ? console.log("Данные успешно обновлены!")
                     : console.log("Ошибка:", response.data.error);
             });
+            this.counterСall = 0
+            this.entranceСheckCounterСall();
+            this.received_formattingData();
         },
 
         received_formattingData() {
@@ -220,64 +222,62 @@ export default {
 <template>
     <h1>Админка</h1>
 
-    <form>
-        <div class="row">
-            <div class="col">
-                <h3>Расписание</h3>
-                <div class="cntent_table">
-                    <table>
+    <div class="row">
+        <div class="col">
+            <h3>Расписание</h3>
+            <div class="cntent_table">
+                <table>
 
-                        <tr>
-                            <th>Урок</th>
-                            <th>Начало звонка</th>
-                            <th>Конец звонка</th>
-                            <th>Включить звонок</th>
+                    <tr>
+                        <th>Урок</th>
+                        <th>Начало звонка</th>
+                        <th>Конец звонка</th>
+                        <th>Включить звонок</th>
 
-                            <!--- включение и выключение всех звонков  -->
-                            <th class="input"><el-checkbox :indeterminate="isIndeterminate" v-model="allCheckСall"
-                                    @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
-                        </tr>
+                        <!--- включение и выключение всех звонков  -->
+                        <th class="input"><el-checkbox :indeterminate="isIndeterminate" v-model="allCheckСall"
+                                @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
+                    </tr>
 
-                        <tr v-for=" (x, index) in timeLesson" :key="timeLesson.ID">
-                            <td>{{ index + 1 }}</td>
-                            <td><input name="timeBeginning" v-model="x.timeBeginning" type="time"></td>
-                            <td><input name="timeEnd" v-model="x.timeEnd" type="time"></td>
-                            <td><input name="сheckСall" v-model="x.сheckСall" type="checkbox" @change="CounterСall(x)">
-                            </td>
-                        </tr>
+                    <tr v-for=" (x, index) in timeLesson" :key="timeLesson.ID">
+                        <td>{{ index + 1 }}</td>
+                        <td><input name="timeBeginning" v-model="x.timeBeginning" type="time"></td>
+                        <td><input name="timeEnd" v-model="x.timeEnd" type="time"></td>
+                        <td><input name="сheckСall" v-model="x.сheckСall" type="checkbox" @change="CounterСall(x)">
+                        </td>
+                    </tr>
 
-                    </table>
+                </table>
 
-                    <el-row class="cntent_table_button">
-                        <el-button type="info" class="col" @click="daliteTable()">
-                            Удалить последнее время звонка
-                        </el-button>
-                        <el-button type="info" class="col" @click="abbTable()">
-                            Добавить новое время звонка
-                        </el-button>
-                    </el-row>
-
-                </div>
-            </div>
-
-            <div class="col-lg col-md-auto">
-                <h3>Выбрать мелодию</h3>
-
-                <el-radio-group class="radio_form-check" v-model="this.trueNnamePleers">
-                    <el-radio name="melody" class="form-check" v-for=" x in namePleers" :value="x" size="large"
-                        @click="changelPayer(x)" border>
-                        {{ x }}
-                    </el-radio>
-                </el-radio-group>
+                <el-row class="cntent_table_button">
+                    <el-button type="info" class="col" @click="daliteTable()">
+                        Удалить последнее время звонка
+                    </el-button>
+                    <el-button type="info" class="col" @click="abbTable()">
+                        Добавить новое время звонка
+                    </el-button>
+                </el-row>
 
             </div>
         </div>
-        <div class="button_save">
-            <button type="submit" class="btn btn-secondary" @click="save_mySQL()">
-                Сохранить
-            </button>
+
+        <div class="col-lg col-md-auto">
+            <h3>Выбрать мелодию</h3>
+
+            <el-radio-group class="radio_form-check" v-model="this.trueNnamePleers">
+                <el-radio name="melody" class="form-check" v-for=" x in namePleers" :value="x" size="large"
+                    @click="changelPayer(x)" border>
+                    {{ x }}
+                </el-radio>
+            </el-radio-group>
+
         </div>
-    </form>
+    </div>
+    <div class="button_save">
+        <button class="btn btn-secondary" @click="save_mySQL()">
+            Сохранить
+        </button>
+    </div>
 </template>
 
 
