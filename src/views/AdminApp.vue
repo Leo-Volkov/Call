@@ -5,7 +5,7 @@ export default {
     data() {
         return {
             namePleers: [`Ко-ло-ло`, `Ла-лам-лам`, `ddd3`, `ddd2`, `ddd1`],
-            trueNnamePleers: `Ко-ло-ло`,
+            trueNnamePleers: ``,
 
             allCheckСall: false,
             counterСall: 0,
@@ -107,7 +107,9 @@ export default {
                 element.timeEnd = element.timeEnd.slice(0, 5);
                 element.сheckСall = Boolean(Number(`${element.сheckСall}`));
             });
+            this.trueNnamePleers = this.timeLesson[0].melody
             console.log(this.timeLesson);
+            console.log(this.trueNnamePleers);
         },
 
         clawback_formattingData() {
@@ -146,7 +148,7 @@ export default {
 
         changelPayer(x) {
             console.log(x);
-
+            this.trueNnamePleers = x;
             this.timeLesson.forEach(element => {
                 element.melody = x;
             });
@@ -229,22 +231,20 @@ export default {
                 <table>
 
                     <tr>
-                        <th>Урок</th>
+                        <th>№</th>
                         <th>Начало звонка</th>
                         <th>Конец звонка</th>
-                        <th>Включить звонок</th>
-
                         <!--- включение и выключение всех звонков  -->
                         <th class="input"><el-checkbox :indeterminate="isIndeterminate" v-model="allCheckСall"
                                 @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
+
                     </tr>
 
                     <tr v-for=" (x, index) in timeLesson" :key="timeLesson.ID">
-                        <td>{{ index + 1 }}</td>
-                        <td><input name="timeBeginning" v-model="x.timeBeginning" type="time"></td>
-                        <td><input name="timeEnd" v-model="x.timeEnd" type="time"></td>
-                        <td><input name="сheckСall" v-model="x.сheckСall" type="checkbox" @change="CounterСall(x)">
-                        </td>
+                        <td class="td_row_1">{{ index + 1 }}</td>
+                        <td class="td_row_2"><input name="timeBeginning" v-model="x.timeBeginning" type="time"></td>
+                        <td class="td_row_3"><input name="timeEnd" v-model="x.timeEnd" type="time"></td>
+                        <td class="td_row_4"><input name="сheckСall" v-model="x.сheckСall" type="checkbox" @change="CounterСall(x)"></td>
                     </tr>
 
                 </table>
@@ -266,7 +266,7 @@ export default {
 
             <el-radio-group class="radio_form-check" v-model="this.trueNnamePleers">
                 <el-radio name="melody" class="form-check" v-for=" x in namePleers" :value="x" size="large"
-                    @click="changelPayer(x)" border>
+                    @click="changelPayer(x)">
                     {{ x }}
                 </el-radio>
             </el-radio-group>
@@ -311,15 +311,12 @@ th {
 th {
     background-color: azure;
 }
-
-tr .input {
-    background-color: rgb(255, 255, 255);
+.td_row_2 input, .td_row_3 input {
+    width: 100%;
+    text-align: center;
+    border: 0px solid black;
 }
 
-th input {
-    width: 25px;
-    height: 25px;
-}
 
 .cntent_table_button {
     --bs-gutter-x: 0;

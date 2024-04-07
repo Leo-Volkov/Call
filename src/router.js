@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import AdminApp from "./views/AdminApp.vue";
 import UserApp from "./views/UserApp.vue";
 import LoginApp from "./views/LoginApp.vue";
+import SecurityUser from "./views/SecurityUser.vue";
 
 export default createRouter({
   history: createWebHistory(),
@@ -12,6 +13,11 @@ export default createRouter({
       path: "/",
       name: "user",
       component: UserApp,
+    },
+    {
+      path: "/security",
+      name: "security",
+      component: SecurityUser
     },
     {
       path: "/admin",

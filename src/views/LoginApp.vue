@@ -14,13 +14,15 @@ export default {
         }
     },
     methods: {
-         async post_verification() {
-            let response = await axios.post(`/post_verification.php?value_password=${this.value_password}`);
-            if (response.data) {
-                router.push('/admin');
-            } else {
-                this.verification_password = true;
-            };
+        async post_verification() {
+            if (this.value_password.length >= 6) {
+                let response = await axios.post(`/post_verification.php?value_password=${this.value_password}`);
+                if (response.data) {
+                    router.push('/admin');
+                } else {
+                    this.verification_password = true;
+                };
+            }
         },
 
         click_ShowOrHide_password() {
@@ -47,11 +49,11 @@ export default {
 
 <template>
     <div class="form_center">
-        <form>
+        <div class="form">
             <label class="form-label">Пароль:</label>
             <samp class="form_flax">
-                <input :type="type_ShowOrHide_password" class="form-control" 
-                    placeholder="*******" v-model="this.value_password" @input="value_inputLength()">
+                <input :type="type_ShowOrHide_password" class="form-control" placeholder="*******"
+                    v-model="this.value_password" @input="value_inputLength()" @keyup.enter="post_verification()">
                 <button class="button_ShowOrHide_password btn btn-secondary" type="button"
                     @click="click_ShowOrHide_password()">
                     <img :src="img_ShowOrHide_password" alt="Показать/скрыть пароль">
@@ -66,7 +68,7 @@ export default {
                     К админке
                 </button>
             </div>
-        </form>
+        </div>
     </div>
 </template>
 
@@ -95,7 +97,7 @@ body {
     flex-direction: row;
 }
 
-form {
+.form {
     padding: 1.5rem 2rem;
     background: hsl(0, 0%, 100%);
     max-width: 450px;
@@ -106,16 +108,16 @@ form {
     /* border: 0.00001px solid black; */
 }
 
-form label {
+.form label {
     display: block;
     font-weight: 700;
 }
 
-form input {
+.form input {
     font-size: 1rem;
 }
 
-form button {
+.form button {
     border: 1px solid black;
 
 }
