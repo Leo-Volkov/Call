@@ -72,8 +72,8 @@ export default {
         }
     },
     mounted() {
-        this.add_mySQL();
-        // this.received_formattingData();
+        // this.add_mySQL();
+        this.received_formattingData();
         this.entranceСheckCounterСall();
     },
     methods: {
@@ -90,7 +90,7 @@ export default {
             this.clawback_formattingData();
 
             // Отправка данных на сервер
-            axios.post("/save_mySQL.php", this.timeLesson).then((response) => {
+            axios.post("/save_mySQL.php", JSON.stringify(this.timeLesson)).then((response) => {
                 // Обработка ответа сервера
                 response.data.success
                     ? console.log("Данные успешно обновлены!")

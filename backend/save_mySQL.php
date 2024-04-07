@@ -1,32 +1,27 @@
 <?php
+// Получение данных из запроса
+$data = json_decode(file_get_contents("/save_mySQL.php"));
 
 $link = mysqli_connect('web.kioskapi.site', 'call_web_op9', '4o2GKUNA9ULMJ277', 'call_web_op9');
 
-// Задаю кодеравку
+// Кодеравка
 mysqli_set_charset($link, "utf8");
 
 if ($link == false) {
-    echo json_encode(["error" => "Ошибка: Невозможно подключиться к MySQL"]);
-    exit;
+  echo json_encode(["error" => "Ошибка: Невозможно подключиться к MySQL"]);
+  exit;
 }
+// Очистка таблицы БД
+$link->query("TRUNCATE TABLE `Schedule`");
 
-// Получение данных из запроса
-$data = json_decode(file_get_contents("/save"), true);
 
 // Обновление данных в базе данных
 foreach ($data as $row) {
-    $stmt = $link->prepare("UPDATE Schedule SET timeBeginning = ?, timeEnd = ?, сheckСall = ?, melody = ? WHERE ID = ?");
-
-    // Связывание параметров
-    $stmt->bind_param("Schedule", $row["timeBeginning"], $row["timeEnd"], $row["сheckСall"], $row["melody"], $row["ID"]);
-
-    if (!$stmt->execute()) {
-        echo json_encode(["error" => "Ошибка: " . mysqli_error($link)]);
-        exit;
-    }
+  $request = $link->query("INSERT INTO `Schedule` (`timeBeginning`, `timeEnd`, `сheckСall`, `melody`)
+  VALUES ()");
 }
 
 // Ответ серверу
 echo json_encode(["success" => true]);
 
-?>
+// mysql_query()
