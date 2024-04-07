@@ -270,10 +270,7 @@ export default {
 }
 
 body {
-    width: 1024px;
-    height: 768px;
-    max-width: 750px;
-    margin: auto;
+
 }
 
 h2 {

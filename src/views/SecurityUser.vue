@@ -64,6 +64,14 @@ export default {
                     "сheckСall": "1",
                     "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
                     "college_id": "1"
+                },
+                {
+                    "ID": "8",
+                    "timeBeginning": "16:05:00",
+                    "timeEnd": "16:50:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
                 }
             ],
         }
@@ -170,6 +178,12 @@ export default {
             const timeBeginningMinutes = timeBeginningParts[0] * 60 + parseInt(timeBeginningParts[1]);
 
             // Проверка на проигрования звонка
+            console.log('--------------')
+            console.log("Конечное: " + endMinutes)
+            console.log(timeBeginningMinutes)
+            console.log("Минуты в данный момент: " + timeMinutes)
+
+
             if ((timeMinutes == endMinutes || timeMinutes == timeBeginningMinutes) && this.timeLesson[index].сheckСall == "1") {
                 this.playAudio();
             };
@@ -192,15 +206,16 @@ export default {
 
 
 <template>
+<main>
     <header class="row">
         <!-- Название организации -->
         <div class="name_college col">Басовская</div>
 
         <!-- Часы -->
         <div class="time col">
-            {{ CheckingZeroAdditionTime(this.date.getHours()) }}:
-            {{ CheckingZeroAdditionTime(this.date.getMinutes()) }}:
-            {{ CheckingZeroAdditionTime(this.date.getSeconds()) }}
+            <samp>{{ CheckingZeroAdditionTime(this.date.getHours()) }}</samp>:
+            <samp style="margin-left: -1.2vh;">{{ CheckingZeroAdditionTime(this.date.getMinutes()) }}</samp>:
+            <samp style="margin-left: -1.2vh;">{{ CheckingZeroAdditionTime(this.date.getSeconds()) }}</samp>
         </div>
 
         <!-- Дата -->
@@ -216,7 +231,7 @@ export default {
 
     <el-container class="schedule">
 
-        <div v-for=" (i, index) in timeLesson" class="container">
+        <div v-for=" (i, index) in timeLesson" class="container_for">
 
             <el-row class="lesson container align-items-center" :class="timeEventListener_calls(index)">
                 <div class="num_lesson col-auto">
@@ -256,6 +271,7 @@ export default {
     <!-- <audio :src="this.trueNnamePleers"></audio> -->
     <audio src="https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3"></audio>
 
+</main>
 </template>
 
 
@@ -267,32 +283,35 @@ export default {
     padding: 0;
 }
 
-body {
-    width: 1024px;
-    height: 768px;
-    max-width: 750px;
-    margin: auto;
+main {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(68, 66, 66);
 }
 
 h2 {
-    font-size: 3vh;
-    margin-top: 35px;
-    margin-bottom: 20px;
+    font-size: 3.3vh;
+    margin-top: 10px;
+    margin-bottom: 15px;
     text-align: center;
 }
 
 header {
-    margin: 10px;
-    margin-top: 20px;
+    padding: 0 20px;
+    padding-top: 20px;
 }
 
 header div {
-    font-size: 2vh;
+    font-size: 2.7vh;
+    font-weight: 600;
 }
 
 header .time {
     text-align: center;
-    font-size: 2.6vh;
+    font-weight: 600;
+    font-size: 5vh;
 }
 
 header .date {
@@ -300,14 +319,22 @@ header .date {
 }
 
 .schedule {
+    display: flex;
     text-align: center;
     margin-top: 15px;
+}
+.container_for {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
 .lesson,
 .change {
     min-width: 300px;
-    width: 100%;
+    width: 50%;
     padding: 0 10px 0 10px;
     margin-bottom: 1px;
     font-size: 2vh;
@@ -319,11 +346,12 @@ header .date {
 }
 
 .peremena_text {
+    font-weight: 600;
     font-size: 1.5vh;
 }
 
 .lesson {
-    color: #ffffff;
+    color: #989696;
     font-weight: 600;
     height: 6vh;
     border-radius: 16px;
@@ -351,14 +379,13 @@ header .date {
 
 /* подставные класы */
 .past {
-    background-color: rgb(87, 133, 208);
+    background-color: rgb(38, 55, 81);
 }
 
 .active {
-    background-color: rgb(255, 145, 0);
+    background-color: rgb(49, 102, 155);
 }
-
 .planet {
-    background-color: rgb(0, 0, 255);
+    background-color: rgb(38, 55, 81);
 }
 </style>

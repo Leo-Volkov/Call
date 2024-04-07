@@ -24,7 +24,9 @@ export default defineComponent({
 	</el-config-provider>
 </template>
 
-<style>
-
-
+<style >
+* {
+	margin: 0;
+	/* padding: 0; */
+}
 </style>
