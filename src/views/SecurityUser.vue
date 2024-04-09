@@ -72,6 +72,22 @@ export default {
                     "сheckСall": "1",
                     "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
                     "college_id": "1"
+                },
+                {
+                    "ID": "9",
+                    "timeBeginning": "17:00:00",
+                    "timeEnd": "17:45:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
+                },
+                {
+                    "ID": "10",
+                    "timeBeginning": "17:55:00",
+                    "timeEnd": "18:40:00",
+                    "сheckСall": "1",
+                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
+                    "college_id": "1"
                 }
             ],
         }
@@ -337,12 +353,12 @@ header .date {
     width: 50%;
     padding: 0 10px 0 10px;
     margin-bottom: 1px;
-    font-size: 2vh;
+    font-size: 1.6vh;
 }
 
 .lesson .col,
 .change .col {
-    padding: 10px;
+    padding: 0 15px;
 }
 
 .peremena_text {
@@ -353,12 +369,12 @@ header .date {
 .lesson {
     color: #989696;
     font-weight: 600;
-    height: 6vh;
+    height: 5vh;
     border-radius: 16px;
 }
 
 .change {
-    height: 3vh;
+    height: 2.5vh;
 }
 
 .schedule {
