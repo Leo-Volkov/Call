@@ -17,7 +17,6 @@ export default {
           "timeBeginning": "09:00:00",
           "timeEnd": "09:45:00",
           "сheckСall": "1",
-          "melody": "Ко-ло-ло",
           "college_id": "1"
         },
         {

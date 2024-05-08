@@ -119,7 +119,7 @@ export default {
 
             this.received_formattingData();
         },
-
+        
         received_formattingData() {
             this.timeLesson.forEach(element => {
                 element.timeBeginning = element.timeBeginning.slice(0, 5);

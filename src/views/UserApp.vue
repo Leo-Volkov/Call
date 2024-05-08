@@ -269,10 +269,6 @@ export default {
     padding: 0;
 }
 
-body {
-
-}
-
 h2 {
     font-size: 3vh;
     margin-top: 35px;
