@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 08 2024 г., 17:34
+-- Время создания: Май 11 2024 г., 18:04
 -- Версия сервера: 10.4.32-MariaDB
 -- Версия PHP: 8.2.12
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `melodies` (
   `id` int(11) NOT NULL,
   `name` text DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL,
+  `is_enabled` tinyint(1) NOT NULL,
   `src` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -38,7 +38,7 @@ CREATE TABLE `melodies` (
 -- Дамп данных таблицы `melodies`
 --
 
-INSERT INTO `melodies` (`id`, `name`, `enabled`, `src`) VALUES
+INSERT INTO `melodies` (`id`, `name`, `is_enabled`, `src`) VALUES
 (1, 'Дзынь-дзынь', 1, 'Дзынь');
 
 -- --------------------------------------------------------
@@ -86,14 +86,14 @@ INSERT INTO `schedule` (`id`, `number`, `type_id`, `startTime`, `endTime`) VALUE
 CREATE TABLE `type_schedule` (
   `id` int(11) NOT NULL,
   `name` text DEFAULT NULL,
-  `selected` tinyint(1) NOT NULL
+  `is_selected` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Дамп данных таблицы `type_schedule`
 --
 
-INSERT INTO `type_schedule` (`id`, `name`, `selected`) VALUES
+INSERT INTO `type_schedule` (`id`, `name`, `is_selected`) VALUES
 (1, 'Расписание на будни', 1),
 (2, 'Расписание на субботу', 1),
 (3, 'Сокращённый день', 0);
