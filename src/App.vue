@@ -1,4 +1,7 @@
 <script>
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:3005';
+
 import { RouterView } from 'vue-router';
 import { defineComponent } from 'vue'
 import { ElConfigProvider } from 'element-plus'

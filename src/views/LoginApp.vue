@@ -1,5 +1,7 @@
 <script>
 import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:3005';
+
 import router from '../router.js';
 
 
@@ -16,12 +18,14 @@ export default {
     methods: {
         async post_verification() {
             if (this.value_password.length >= 6) {
-                let response = await axios.post(`/post_verification.php?value_password=${this.value_password}`);
+                // let response = await axios.get(`/login/verification?value_password=${this.value_password}`);
+                let response = await axios.post(`http://localhost:3005/login/verification?value_password=${this.value_password}`);
                 if (response.data) {
                     router.push('/admin');
                 } else {
                     this.verification_password = true;
                 };
+                    // router.push('/admin');
             }
         },
 

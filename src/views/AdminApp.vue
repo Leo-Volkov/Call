@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:3005';
 
 export default {
   data() {
@@ -357,11 +358,11 @@ export default {
   </div>
 
 
-  <!-- <div class="button_save">
+  <div class="button_save">
     <button class="btn btn-secondary" @click="save_mySQL()">
       Сохранить
     </button>
-  </div> -->
+  </div>
 
 </template>
 
@@ -444,7 +445,7 @@ th {
 
 /* TODO стили кнопок и переключений  */
 .button_save {
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 30px;
   display: flex;
   justify-content: center;
