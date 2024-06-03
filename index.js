@@ -4,7 +4,7 @@ const mysql = require('mysql');
 
 const port = 3005;
 app.listen(port, () => {
-  console.log(`Ok, server ${port}`)
+  console.log(`200, server ${port}`)
 });
 
 // Настройки cors
@@ -27,21 +27,13 @@ const db = mysql.createConnection({
 // Проверка ощибок при подключении
 db.connect(err => {
   if (err) throw err;
-  console.log('mysql');
+  console.log('200, mysql');
 });
 
 
 
 // Переменные:
-let x = 200;
 
-app.get('/e', (req, res) => {
-  let sql = `SELECT * FROM schedule`;
-  db.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(`Звонки получены: { ${JSON.stringify(results)} }`);
-  });
-});
 
 app.post('/login/verification', (req, res) => {
   let value_password = req.query.value_password;
@@ -51,4 +43,13 @@ app.post('/login/verification', (req, res) => {
     res.send("false");
   };
 });
+
+
+// app.get('/e', (req, res) => {
+//   let sql = `SELECT * FROM schedule`;
+//   db.query(sql, (err, results) => {
+//     if (err) throw err;
+//     res.send(`Звонки получены: { ${JSON.stringify(results)} }`);
+//   });
+// });
 
