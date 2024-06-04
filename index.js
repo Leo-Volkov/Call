@@ -34,9 +34,10 @@ db.connect(err => {
 
 // Переменные:
 
+let what_type_schedule_now_on = ""; //"Weekdays", "Saturday", "Shortened_day" - какой_тип_расписание_сейчас_включён 
 
 app.post('/login/verification', (req, res) => {
-  let value_password = req.query.value_password;
+  let value_password = req.body.value_password;
   if (value_password === "123321") {
     res.send("true");
   } else {
@@ -45,11 +46,16 @@ app.post('/login/verification', (req, res) => {
 });
 
 
+// let x
 // app.get('/e', (req, res) => {
 //   let sql = `SELECT * FROM schedule`;
 //   db.query(sql, (err, results) => {
 //     if (err) throw err;
-//     res.send(`Звонки получены: { ${JSON.stringify(results)} }`);
+//     x = JSON.stringify(results)
 //   });
+//   res.send(`Звонки получены: { ${x} }`);
 // });
+
+
+
 

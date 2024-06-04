@@ -106,6 +106,7 @@ export default {
             console.log(this.trueNnamePleers);
         },
 
+        // изменение Счетчик времени
         changeTime_counter(startTime, endTime) {
             // Разбиваем время на часы и минуты
             const startParts = startTime.split(':');
@@ -126,6 +127,7 @@ export default {
             return difference;
         },
 
+        // Включение времени
         startTimer() {
             window.setInterval(() => {
                 this.date = new Date()
@@ -356,5 +358,11 @@ header .date {
 
 .planet {
     background-color: rgb(0, 0, 255);
+}
+
+@media (min-width: 800px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 600px;
+    }
 }
 </style>
