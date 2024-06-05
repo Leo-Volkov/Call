@@ -54,13 +54,8 @@
 ### API-архитектура
 
 ##### Отображение расписания
-`GET:` `/user/schedule/get`
+`GET:` `/user/schedule/{college_id}`
 Добавление расписание по назвони таблицы и получить действующею мелодию
-```
-query {
-  college_id: Number
-}
-```
 `1 SQL-запрос:` `"SELECT *
 FROM ${schedule_type} WHERE college_id = ${college_id}"`
 `2 SQL-запрос:` `"SELECT *
@@ -81,24 +76,14 @@ FROM melodies WHERE whether = true"`
 ```
 
 ##### Проверка пароля
-`POST` `/login/verification`
-```
-bodu {
-  value_password: String
-}
-```
+`POST` `/login/verification?value_password`
 ```
 получение {
   Boolean
 }
 ```
-##### Отображение расписания для изменения
-`GET:` `/admin/schedule/get`
-```
-query {
-  college_id: Number
-}
-```
+##### Отображение расписания на странице редактирования 
+`GET:` `/admin/schedule/{college_id}`
 ```
 получение {
   schedule: [{
@@ -115,7 +100,7 @@ query {
 ```
 
 ##### Изменение расписания
-`PUT` `/admin/schedule/modify`
+`PUT` `/admin/schedule`
 ```
 bodu {
   schedule: [{
@@ -133,9 +118,4 @@ bodu {
 ```
 
 ##### Добавление мелодии
-`GET` `/admin/melody/add`
-```
-bodu {
-  "title": String
-}
-```
+`POST` `/admin/melody/{title}`
