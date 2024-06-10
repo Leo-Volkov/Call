@@ -1,6 +1,6 @@
 <script>
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3005';
+
 
 import router from '../router.js';
 

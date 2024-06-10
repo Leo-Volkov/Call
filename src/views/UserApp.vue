@@ -9,71 +9,14 @@ export default {
             dateLesson: new Date(),
             trueNnamePleers: '',
 
-            timeLesson: [
-                {
-                    "ID": "1",
-                    "timeBeginning": "09:00:00",
-                    "timeEnd": "09:45:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "2",
-                    "timeBeginning": "09:55:00",
-                    "timeEnd": "10:40:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "3",
-                    "timeBeginning": "11:00:00",
-                    "timeEnd": "11:45:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "4",
-                    "timeBeginning": "11:55:00",
-                    "timeEnd": "12:40:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "5",
-                    "timeBeginning": "13:00:00",
-                    "timeEnd": "13:45:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "6",
-                    "timeBeginning": "14:05:00",
-                    "timeEnd": "14:50:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                },
-                {
-                    "ID": "7",
-                    "timeBeginning": "15:10:00",
-                    "timeEnd": "15:55:00",
-                    "сheckСall": "1",
-                    "melody": "https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3",
-                    "college_id": "1"
-                }
-            ],
+            timeLesson: [],
         }
     },
 
     mounted() {
         this.startTimer();
-        this.received_formattingData();
-        // this.add_mySQL();
+        // this.received_formattingData();
+        this.add_mySQL();
 
         document.addEventListener('keydown', function (event) {
             if (event.code == 'Space') {
@@ -90,9 +33,11 @@ export default {
 
         // Работа с серваком 
         async add_mySQL() {
-            let response = await axios.get('/add_mySQL.php');
+            let response = await axios.get('/user/schedule');
             console.log(response);
-            this.timeLesson = response.data;
+            this.timeLesson = response.data.schedule;
+            console.log(response.data.schedule)
+            console.log(response.data.melodies);
 
             this.received_formattingData();
         },
