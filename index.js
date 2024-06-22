@@ -162,7 +162,7 @@ app.get('/user/schedule', async (rep, res) => {
     where: {
       enabled: 1,
     },
-  });
+  })
 
   // Отправка данных пользователю
   res.send({ melodie, schedule })
@@ -170,48 +170,35 @@ app.get('/user/schedule', async (rep, res) => {
 
 // Индификация на прова к администрации
 app.post('/login/verification', async (req, res) => {
-  let value_password = req.body.value_password;
-  if (value_password === "123321") {
-    res.send("true");
+  let value_password = req.body.value_password
+  if (value_password === '123321') {
+    res.send('true')
   } else {
-    res.send("false");
-  };
-});
+    res.send('false')
+  }
+})
 
 // Отправка данных в админку
 app.get('/admin/schedule', async (rep, res) => {
+  await sequelize.sync() // эта строка существует для автоматизации создания таблиц в базе даных
+  console.log('Таблицы созданы') // Создаёт таблицы, если их нет
 
-  // эта строка существует для автоматизации создания таблиц в базе даных
-  await sequelize.sync();
-  console.log("Таблицы созданы"); // Создаёт таблицы, если их нет
-
-  const weekdays = await Weekdays.findAll();
-  const saturday = await Saturday.findAll();
-  const shortenedDay = await ShortenedDay.findAll();
+  const weekdays = await Weekdays.findAll()
+  const saturday = await Saturday.findAll()
+  const shortenedDay = await ShortenedDay.findAll()
   const shortenedDay_enabled = await Types.findOne({
-  attributes: ['enabled'],
+    attributes: ['enabled'],
     where: {
-      type: 'shortenedDay'
+      type: 'shortenedDay',
     },
-  });
-  const melodies = await Melodies.findAll();
-  
+  })
+  const melodies = await Melodies.findAll()
+
   res.send({
     weekdays,
     saturday,
     shortenedDay,
     melodies,
-    shortenedDay_enabled
-  });
-});
-
-
-// let x
-// app.get('/e', async (req, res) => {
-//   let sql = `SELECT * FROM schedule`;
-//   db.query(sql, (err, results) => {
-//     if (err) throw err;
-//     x = JSON.stringify(results)
-//   });
-//   res.send(`Звонки получены: { ${x} }`);
-// });
+    shortenedDay_enabled,
+  })
+})
