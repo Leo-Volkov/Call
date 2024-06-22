@@ -202,3 +202,5 @@ app.get('/admin/schedule', async (rep, res) => {
     shortenedDay_enabled,
   })
 })
+
+
