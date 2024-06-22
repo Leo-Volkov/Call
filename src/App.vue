@@ -1,6 +1,6 @@
 <script>
-import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3005';
+// import axios from 'axios';
+// axios.defaults.baseURL = 'http://localhost:3306';
 
 import { RouterView } from 'vue-router';
 import { defineComponent } from 'vue'
