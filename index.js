@@ -86,67 +86,62 @@ const Melodies = sequelize.define('melodies', {
   timestamps: false 
 });
 
-/* const Types = sequelize.define('types', {
+const Types = sequelize.define('types', {
   type: DataTypes.STRING,
   enabled: DataTypes.BOOLEAN
 },
 {
   timestamps: false 
 });
-*/
-
-
-
-
 
 
 
 
 // запросы
-// // Отправка расписания пользователю
-// app.get('/user/schedule', async (rep, res) => {
-//   let schedule_type = ""
+// Отправка расписания пользователю
+app.get('/user/schedule', async (rep, res) => {
+  const data = {
+    schedule_type: ""
+  };
 
-//   // получение типа расписаиния 
-//   let sql = `SELECT id FROM types WHERE enabled = 1`;
-//   db.query(sql, (err, results) => {
-//     if (err) throw err;
+  // получение типа расписаиния
+  const types = await Types.findAll({
+    attributes: ['id'],
+    where: {
+      enabled: 1
+    }
+  });
+  let type = JSON.stringify(types)
+    if (type[0].id == 3) {
+      data.schedule_type = "ShortenedDay";
+    } else {
+      let Dat = new Date
+      if (Dat.getDay() == 6) {
+        data.schedule_type = "Saturday";
+      } else if (Dat.getDay() == 0) {
+        // Воскрисение: звонки и расписание отключено
+        res.send("OFF");
+      } else {
+        data.schedule_type = "Weekdays";
+      };
+    };
 
-//     if (results[0].id == 3) {
-//       schedule_type = "shortenedDay";
-//     } else {
-//       let Dat = new Date
-//       if (Dat.getDay() == 6) {
-//         schedule_type = "saturday";
-//       } else if (Dat.getDay() == 0) {
-//         // Воскрисение: звонки и расписание отключено
-//         res.send("OFF");
-//       } else {
-//         schedule_type = "weekdays";
-//       };
-//     };
+    // Получение расписания звонков
+    const results = await data.schedule_type.findAll();
+    let schedule = JSON.stringify(results)
 
-//     // Получение расписания звонков
-//     sql = `SELECT * FROM ${schedule_type}`;
-//     db.query(sql, (err, results) => {
-//       if (err) throw err;
-//       let schedule = JSON.stringify(results)
+    // Получение милодии звонка
+    const melodies = await Melodies.findAll({
+      attributes: ['title'],
+      where: {
+        enabled: 1
+      }
+    });
+        let melodie = JSON.stringify(melodies)[0]
 
-//       // Получение милодии звонка
-//       sql = `SELECT * FROM melodies WHERE enabled = true`;
-//       db.query(sql, (err, results) => {
-//         if (err) throw err;
-//         let melodies = JSON.stringify(results)
-
-//         // Отправка данных пользователю
-//         res.send({
-//           schedule,
-//           melodies
-//         });
-//       });
-//     });
-//   });
-// });
+        // Отправка данных пользователю
+  res.send({ schedule, melodies })
+});
 
 
 // // Индификация на прова к администрации 
