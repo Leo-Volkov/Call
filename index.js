@@ -86,17 +86,23 @@ const Melodies = sequelize.define('melodies', {
   timestamps: false 
 });
 
-const Types = sequelize.define('types', {
+/* const Types = sequelize.define('types', {
   type: DataTypes.STRING,
   enabled: DataTypes.BOOLEAN
 },
 {
   timestamps: false 
 });
+*/
 
 
 
 
+
+
+
+
+// запросы
 // // Отправка расписания пользователю
 // app.get('/user/schedule', async (rep, res) => {
 //   let schedule_type = ""
