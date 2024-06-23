@@ -158,7 +158,8 @@ app.get('/user/schedule', async (rep, res) => {
       enabled: 1,
     },
   })
-  if (types[0].id == 3) {
+  // ///////////////////////////////////////////////////////////////////
+  if (types[0].id != 3) {
     data.schedule_type = 'ShortenedDay'
   } else {
     let Dat = new Date()
@@ -174,13 +175,13 @@ app.get('/user/schedule', async (rep, res) => {
   }
 
   // Получение расписания звонков
-  let schedule
+  let timetable
   if (data.schedule_type === 'ShortenedDay') {
-    schedule = received_formattingData_time(await ShortenedDay.findAll())
+    timetable = received_formattingData_time(await ShortenedDay.findAll())
   } else if (data.schedule_type === 'Saturday') {
-    schedule = received_formattingData_time(await Saturday.findAll())
+    timetable = received_formattingData_time(await Saturday.findAll())
   } else if (data.schedule_type === 'Weekdays') {
-    schedule = received_formattingData_time(await Weekdays.findAll())
+    timetable = received_formattingData_time(await Weekdays.findAll())
   }
 
   // Получение милодии звонка
@@ -190,9 +191,9 @@ app.get('/user/schedule', async (rep, res) => {
       enabled: 1,
     },
   })
-  const timeCall = get_array_timetable_call(schedule)
+  const timeCall = get_array_timetable_call(timetable)
   // Отправка данных пользователю
-  res.send({ melodie, schedule, timeCall })
+  res.send({ melodie: melodie[0].title, timetable: timetable, timeCall })
 })
 
 // Индификация на прова к администрации
@@ -253,7 +254,7 @@ app.get('/admin/schedule', async (rep, res) => {
 
 // проверка функции
 ;(async () => {
-  // get_array_timetable_call(await Weekdays.findAll())
+  get_array_timetable_call(await Weekdays.findAll())
 })() //
 
 // Функции
@@ -290,11 +291,12 @@ function get_array_timetable_call(new_table) {
     start_Lesson_2[index] = timePart[0] * 60 + parseInt(timePart[1])
 
     timeCall.timetable.push({
-      start_Lesson: start_Lesson_1[index],
+      start_Lesson: start_Lesson_2[index],
       end_Lesson: end_Lesson[index]
     })
   })
   timeCall.time.push(...start_Lesson_1, ...end_Lesson, ...start_Lesson_2)
   timeCall.time = (arr => [...new Set(arr)])(timeCall.time).sort()
+  
   return timeCall
 }
