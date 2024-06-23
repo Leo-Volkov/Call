@@ -8,43 +8,45 @@ import router from '../router.js';
 export default {
   data() {
     return {
-      img_ShowOrHide_password: "https://cdn-icons-png.flaticon.com/512/7794/7794218.png",
-      type_ShowOrHide_password: "password",
+      img_display: "https://cdn-icons-png.flaticon.com/512/7794/7794218.png",
+      display_password: "password",
       value_password: "",
+      value_logen: "",
       verification_password: false,
       active_button: false
     }
   },
   methods: {
     async post_verification() {
-      if (this.value_password.length >= 6) {
+      if (this.value_password.length >= 6 && this.value_logen != "") {
         // let response = await axios.get(`/login/verification?value_password=${this.value_password}`);
         // let response = await axios.post(`http://localhost:3005/login/verification?value_password=${this.value_password}`);
-        let response = await axios.post(`http://localhost:3005/login/verification`, {
-          value_password: this.value_password
+        let response = await axios.post(`/login/verification`, {
+          value_password: this.value_password,
+          value_logen: this.value_logen
         });
-
-        if (response.data) {
+        if (response.data == true) {
           router.push('/admin');
-        } else {
+        } else if (response.data == false) {
           this.verification_password = true;
+        } else {
+          console.log(response.data.mesendg);
         };
-        // router.push('/admin');
       }
     },
 
     click_ShowOrHide_password() {
-      if (this.type_ShowOrHide_password == "password") {
-        this.type_ShowOrHide_password = "text";
-        this.img_ShowOrHide_password = "https://cdn-icons-png.flaticon.com/512/158/158746.png";
+      if (this.display_password == "password") {
+        this.display_password = "text";
+        this.img_display = "https://cdn-icons-png.flaticon.com/512/158/158746.png";
       } else {
-        this.type_ShowOrHide_password = "password";
-        this.img_ShowOrHide_password = "https://cdn-icons-png.flaticon.com/512/7794/7794218.png";
+        this.display_password = "password";
+        this.img_display = "https://cdn-icons-png.flaticon.com/512/7794/7794218.png";
       };
     },
 
     value_inputLength() {
-      this.value_password.length >= 6
+      this.value_password.length >= 6 && this.value_logen != ""
         ? this.active_button = true
         : this.active_button = false;
     }
@@ -58,16 +60,19 @@ export default {
 <template>
   <div class="form_center">
     <div class="form">
-      <label class="form-label">Пароль:</label>
+      <label class="form-label">Логин и пароль:</label>
+      <input :type="value_logen" class="form-control" placeholder="Логин" v-model="this.value_logen"
+      @input="value_inputLength()" @keyup.enter="post_verification()">
       <samp class="form_flax">
-        <input :type="type_ShowOrHide_password" class="form-control" placeholder="*******" v-model="this.value_password"
+        <input :type="display_password" class="form-control" placeholder="*******" v-model="this.value_password"
           @input="value_inputLength()" @keyup.enter="post_verification()">
+
         <button class="button_ShowOrHide_password btn btn-secondary" type="button" @click="click_ShowOrHide_password()">
-          <img :src="img_ShowOrHide_password" alt="Показать/скрыть пароль">
+          <img :src="img_display" alt="Показать/скрыть пароль">
         </button>
       </samp>
       <div class="docer">
-        <p v-if="verification_password">Пароль не верный, мошенник!</p>
+        <p v-if="verification_password">Пароль и/или Логин не верный, мошенник!</p>
       </div>
       <div style="display: flex; align-items: center; justify-content: center;">
         <button class="verification btn" :class="[this.active_button ? `btn-primary` : `btn-secondary`]"
@@ -113,6 +118,7 @@ body {
   flex-direction: column;
   box-shadow: 0 2px 15px -10px currentColor;
   /* border: 0.00001px solid black; */
+  gap: 1.7vh;
 }
 
 .form label {
@@ -153,7 +159,6 @@ img {
 .docer {
   margin-bottom: 9px;
   width: 80%;
-  height: 19px;
 }
 
 p {

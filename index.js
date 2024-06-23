@@ -61,7 +61,6 @@ const Weekdays = sequelize.define(
     timestamps: false,
   },
 )
-
 const Saturday = sequelize.define(
   'saturdays',
   {
@@ -76,7 +75,6 @@ const Saturday = sequelize.define(
     timestamps: false,
   },
 )
-
 const ShortenedDay = sequelize.define(
   'shortenedDays',
   {
@@ -91,7 +89,6 @@ const ShortenedDay = sequelize.define(
     timestamps: false,
   },
 )
-
 const Melodies = sequelize.define(
   'melodies',
   {
@@ -105,12 +102,21 @@ const Melodies = sequelize.define(
     timestamps: false,
   },
 )
-
 const Types = sequelize.define(
   'types',
   {
     type: DataTypes.STRING,
     enabled: DataTypes.BOOLEAN,
+  },
+  {
+    timestamps: false,
+  },
+)
+const Users = sequelize.define(
+  'users',
+  {
+    logen: DataTypes.STRING,
+    password: DataTypes.STRING,
   },
   {
     timestamps: false,
@@ -170,17 +176,36 @@ app.get('/user/schedule', async (rep, res) => {
 
 // Индификация на прова к администрации
 app.post('/login/verification', async (req, res) => {
-  let value_password = req.body.value_password
-  if (value_password === '123321') {
-    res.send('true')
-  } else {
-    res.send('false')
+  const value_password = req.body.value_password
+  const value_logen = req.body.value_logen
+
+  try {
+    const resurs = await Users.findAll({
+      where: {
+        logen: value_logen,
+      },
+    })
+    if (resurs == 0) {
+      res.send(false)
+    } else {
+      if (value_password === resurs[0].password && value_logen === resurs[0].logen) {
+        res.send(true)
+      } else {
+        res.send(false)
+      }
+    }
+  } catch (error) {
+    res.send({
+      error,
+      mesendg: `Ощибка: ${error}`,
+    })
   }
 })
 
 // Отправка данных в админку
 app.get('/admin/schedule', async (rep, res) => {
   await sequelize.sync() // эта строка существует для автоматизации создания таблиц в базе даных
+  await sequelize.sync({ alter: true }) // создаёт соответственные столбцы
   console.log('Таблицы созданы') // Создаёт таблицы, если их нет
 
   const weekdays = await Weekdays.findAll()
@@ -202,5 +227,3 @@ app.get('/admin/schedule', async (rep, res) => {
     shortenedDay_enabled,
   })
 })
-
-
