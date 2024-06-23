@@ -51,6 +51,11 @@ try {
 const Weekdays = sequelize.define(
   'weekdays',
   {
+    call_id: {
+      type: DataTypes.INTEGER,
+      key: 'id',
+      primaryKey: true,
+    },
     enabled: {
       type: DataTypes.BOOLEAN,
     },
@@ -64,6 +69,11 @@ const Weekdays = sequelize.define(
 const Saturday = sequelize.define(
   'saturdays',
   {
+    call_id: {
+      type: DataTypes.INTEGER,
+      key: 'id',
+      primaryKey: true,
+    },
     enabled: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
@@ -78,6 +88,11 @@ const Saturday = sequelize.define(
 const ShortenedDay = sequelize.define(
   'shortenedDays',
   {
+    call_id: {
+      type: DataTypes.INTEGER,
+      key: 'id',
+      primaryKey: true,
+    },
     enabled: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
@@ -122,6 +137,13 @@ const Users = sequelize.define(
     timestamps: false,
   },
 )
+
+// ;(async () => { // эта строка существует для автоматизации создания таблиц в базе даных
+//   await sequelize.sync()  // Создаёт таблицы, если их нет
+//   await sequelize.sync({ alter: true })
+//   console.log('Таблицы созданы') //INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0') 
+// })()
+
 
 // запросы
 // Отправка расписания пользователю
@@ -204,10 +226,6 @@ app.post('/login/verification', async (req, res) => {
 
 // Отправка данных в админку
 app.get('/admin/schedule', async (rep, res) => {
-  await sequelize.sync() // эта строка существует для автоматизации создания таблиц в базе даных
-  await sequelize.sync({ alter: true }) // создаёт соответственные столбцы
-  console.log('Таблицы созданы') // Создаёт таблицы, если их нет
-
   const weekdays = await Weekdays.findAll()
   const saturday = await Saturday.findAll()
   const shortenedDay = await ShortenedDay.findAll()
