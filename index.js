@@ -141,9 +141,8 @@ const Users = sequelize.define(
 // ;(async () => { // эта строка существует для автоматизации создания таблиц в базе даных
 //   await sequelize.sync()  // Создаёт таблицы, если их нет
 //   await sequelize.sync({ alter: true })
-//   console.log('Таблицы созданы') //INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0') 
+//   console.log('Таблицы созданы') //INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0')
 // })()
-
 
 // запросы
 // Отправка расписания пользователю
@@ -159,8 +158,7 @@ app.get('/user/schedule', async (rep, res) => {
       enabled: 1,
     },
   })
-  let type = JSON.stringify(types)
-  if (type[0].id == 3) {
+  if (types[0].id == 3) {
     data.schedule_type = 'ShortenedDay'
   } else {
     let Dat = new Date()
@@ -168,7 +166,8 @@ app.get('/user/schedule', async (rep, res) => {
       data.schedule_type = 'Saturday'
     } else if (Dat.getDay() == 0) {
       // Воскрисение: звонки и расписание отключено
-      res.send('OFF')
+      res.send()
+      return
     } else {
       data.schedule_type = 'Weekdays'
     }
@@ -177,11 +176,11 @@ app.get('/user/schedule', async (rep, res) => {
   // Получение расписания звонков
   let schedule
   if (data.schedule_type === 'ShortenedDay') {
-    schedule = await ShortenedDay.findAll()
+    schedule = received_formattingData_time(await ShortenedDay.findAll())
   } else if (data.schedule_type === 'Saturday') {
-    schedule = await Saturday.findAll()
+    schedule = received_formattingData_time(await Saturday.findAll())
   } else if (data.schedule_type === 'Weekdays') {
-    schedule = await Weekdays.findAll()
+    schedule = received_formattingData_time(await Weekdays.findAll())
   }
 
   // Получение милодии звонка
@@ -191,9 +190,9 @@ app.get('/user/schedule', async (rep, res) => {
       enabled: 1,
     },
   })
-
+  const timeCall = get_array_timetable_call(schedule)
   // Отправка данных пользователю
-  res.send({ melodie, schedule })
+  res.send({ melodie, schedule, timeCall })
 })
 
 // Индификация на прова к администрации
@@ -226,16 +225,21 @@ app.post('/login/verification', async (req, res) => {
 
 // Отправка данных в админку
 app.get('/admin/schedule', async (rep, res) => {
-  const weekdays = await Weekdays.findAll()
-  const saturday = await Saturday.findAll()
-  const shortenedDay = await ShortenedDay.findAll()
+  // эта строка существует для автоматизации создания таблиц в базе даных
+  await sequelize.sync() // Создаёт таблицы, если их нет
+  await sequelize.sync({ alter: true })
+  console.log('Таблицы созданы') //INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0')
+
+  const weekdays = received_formattingData_time(await Weekdays.findAll())
+  const saturday = received_formattingData_time(await Saturday.findAll())
+  const shortenedDay = received_formattingData_time(await ShortenedDay.findAll())
+  const melodies = await Melodies.findAll()
   const shortenedDay_enabled = await Types.findOne({
     attributes: ['enabled'],
     where: {
       type: 'shortenedDay',
     },
   })
-  const melodies = await Melodies.findAll()
 
   res.send({
     weekdays,
@@ -245,3 +249,52 @@ app.get('/admin/schedule', async (rep, res) => {
     shortenedDay_enabled,
   })
 })
+
+
+// проверка функции
+;(async () => {
+  // get_array_timetable_call(await Weekdays.findAll())
+})() //
+
+// Функции
+function received_formattingData_time(table) {
+  table.forEach(element => {
+    element.start_time = element.start_time.slice(0, 5)
+    element.end_time = element.end_time.slice(0, 5)
+  })
+  return table
+}
+
+function get_array_timetable_call(new_table) {
+  let table = received_formattingData_time(new_table)
+  const timeCall = {
+    time: [],
+    timetable: []
+  }
+
+  const start_Lesson_1 = []
+  const end_Lesson = []
+  const start_Lesson_2 = []
+  table.forEach((element, index) => {
+    let startTime
+    index - 1 === -1 ? (startTime = element.start_time) : (startTime = table[index - 1].end_time)
+
+    // Разбиваем время на часы и минуты
+    const startPart = startTime.split(':')
+    const endPart = element.end_time.split(':')
+    const timePart = element.start_time.split(':')
+
+    // Преобразуем в минуты
+    start_Lesson_1[index] = startPart[0] * 60 + parseInt(startPart[1])
+    end_Lesson[index] = endPart[0] * 60 + parseInt(endPart[1])
+    start_Lesson_2[index] = timePart[0] * 60 + parseInt(timePart[1])
+
+    timeCall.timetable.push({
+      start_Lesson: start_Lesson_1[index],
+      end_Lesson: end_Lesson[index]
+    })
+  })
+  timeCall.time.push(...start_Lesson_1, ...end_Lesson, ...start_Lesson_2)
+  timeCall.time = (arr => [...new Set(arr)])(timeCall.time).sort()
+  return timeCall
+}

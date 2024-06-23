@@ -1,6 +1,5 @@
 <script>
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3005';
 
 export default {
   data() {
@@ -72,18 +71,18 @@ export default {
     }
   },
   mounted() {
-    //this.add_mySQL();
-    this.received_formattingData();
+    this.add_mySQL();
+    // this.received_formattingData();
     this.entranceСheckCounterСall();
   },
   methods: {
 
     // Работа с серваком 
     async add_mySQL() {
-      let response = await axios.get('/add_mySQL.php');
-      this.timeLesson = response.data;
+      let response = await axios.get('/admin/schedule');
+      // this.timeLesson = response.data;
       console.log(response);
-      this.received_formattingData();
+      // this.received_formattingData();
     },
 
     async save_mySQL() {

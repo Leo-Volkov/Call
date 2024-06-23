@@ -19,18 +19,16 @@ export default {
   methods: {
     async post_verification() {
       if (this.value_password.length >= 6 && this.value_logen != "") {
-        // let response = await axios.get(`/login/verification?value_password=${this.value_password}`);
-        // let response = await axios.post(`http://localhost:3005/login/verification?value_password=${this.value_password}`);
         let response = await axios.post(`/login/verification`, {
           value_password: this.value_password,
           value_logen: this.value_logen
         });
-        if (response.data == true) {
+        if (response.data) {
           router.push('/admin');
-        } else if (response.data == false) {
-          this.verification_password = true;
-        } else {
+        } else if (response.data.mesendg != undefined) {
           console.log(response.data.mesendg);
+        } else {
+          this.verification_password = true;
         };
       }
     },

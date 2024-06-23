@@ -1,22 +1,23 @@
 <script>
 import axios from 'axios';
-// axios.defaults.baseURL = 'http://localhost:3005';
 
 export default {
     data() {
         return {
             date: new Date(),
-            dateLesson: new Date(),
-            trueNnamePleers: '',
+            new_timeCall: new Date(),
+            melodie: '',
 
-            timeLesson: [],
+            timeCall: [],
+
+            timetable: [],
         }
     },
 
     mounted() {
         this.startTimer();
-        // this.received_formattingData();
-        this.add_mySQL();
+        this.add_DB();
+        this.call()
 
         document.addEventListener('keydown', function (event) {
             if (event.code == 'Space') {
@@ -24,31 +25,21 @@ export default {
                 audio.play();
             };
         });
+
     },
     methods: {
         playAudio() {
             let audio = document.querySelector("audio");
             audio.play();
         },
+        call() {
 
-        // Работа с серваком 
-        async add_mySQL() {
-            let response = await axios.get('/user/schedule');
-            console.log(response);
-            this.timeLesson = response.data.schedule;
-            console.log(response.data.schedule)
-            console.log(response.data.melodies);
-
-            this.received_formattingData();
         },
 
-        received_formattingData() {
-            this.timeLesson.forEach(element => {
-                element.timeBeginning = element.timeBeginning.slice(0, 5);
-                element.timeEnd = element.timeEnd.slice(0, 5);
-            });
-            this.trueNnamePleers = this.timeLesson[0].melody
-            console.log(this.trueNnamePleers);
+        // Работа с серваком 
+        async add_DB() {
+            const response = await axios.get('/user/schedule');
+            console.log(response);
         },
 
         // изменение Счетчик времени
@@ -79,7 +70,7 @@ export default {
             }, 1000);
 
             window.setInterval(() => {
-                this.dateLesson = new Date()
+                this.new_timeCall = new Date()
             }, 60000);
         },
 
@@ -101,7 +92,7 @@ export default {
             let endTime = this.timeLesson[index].timeEnd;
 
             // Настоящее время
-            let time = `${this.CheckingZeroAdditionTime(this.dateLesson.getHours())}:${this.CheckingZeroAdditionTime(this.dateLesson.getMinutes())}`;
+            let time = `${this.CheckingZeroAdditionTime(this.new_timeCall.getHours())}:${this.CheckingZeroAdditionTime(this.new_timeCall.getMinutes())}`;
             // let time = '13:00';
 
 
@@ -201,7 +192,7 @@ export default {
     <!-- https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3  - колокольчик -->
     <!-- https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3  - спокойный -->
     <!-- https://alexbruni.ru/afx/sound_file/korotkiy-zvonok-shkolnogo-zvonka-35.mp3              - класичиский -->
-    <!-- <audio :src="this.trueNnamePleers"></audio> -->
+    <!-- <audio :src="this.melodie"></audio> -->
     <audio src="https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3"></audio>
 
 </template>
