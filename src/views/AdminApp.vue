@@ -4,135 +4,108 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      namePleers: [`Ко-ло-ло`, `Ла-лам-лам`],
-      trueNnamePleers: ``,
+      melodies: [
+        {
+          title: String,
+          enabled: Boolean
+        }
+      ],
+      // melodie_trueID: ``,
+
+      allCheckСall: {
+        weekdays: Boolean,
+        saturday: Boolean,
+        shortenedDay: Boolean
+      },
+      counterСall: {
+        weekdays: Number,
+        saturday: Number,
+        shortenedDay: Number
+      },
+      isIndeterminate: {
+        weekdays: Boolean,
+        saturday: Boolean,
+        shortenedDay: Boolean
+      },
 
       allCheckСall: false,
       counterСall: 0,
       isIndeterminate: false,
 
-      timeLesson: [
-        {
-          "ID": "1",
-          "timeBeginning": "09:00:00",
-          "timeEnd": "09:45:00",
-          "сheckСall": "1",
-          "college_id": "1"
-        },
-        {
-          "ID": "2",
-          "timeBeginning": "09:55:00",
-          "timeEnd": "10:40:00",
-          "сheckСall": "1",
-          "melody": "Ко-ло-ло",
-          "college_id": "1"
-        },
-        {
-          "ID": "3",
-          "timeBeginning": "11:00:00",
-          "timeEnd": "11:45:00",
-          "сheckСall": "1",
-          "melody": "Ко-ло-ло",
-          "college_id": "1"
-        },
-        {
-          "ID": "4",
-          "timeBeginning": "11:55:00",
-          "timeEnd": "12:40:00",
-          "сheckСall": "1",
-          "melody": "Ко-ло-ло",
-          "college_id": "1"
-        },
-        {
-          "ID": "5",
-          "timeBeginning": "13:00:00",
-          "timeEnd": "13:45:00",
-          "сheckСall": "1",
-          "melody": "Ко-ло-ло",
-          "college_id": "1"
-        },
-        {
-          "ID": "6",
-          "timeBeginning": "14:05:00",
-          "timeEnd": "14:50:00",
-          "сheckСall": "1",
-          "melody": "Ко-ло-ло",
-          "college_id": "1"
-        },
-        {
-          "ID": "7",
-          "timeBeginning": "15:10:00",
-          "timeEnd": "15:55:00",
-          "сheckСall": "1",
-          "melody": "Ко-ло-ло",
-          "college_id": "1"
-        }
-      ],
+
+      shortenedDay_enabled: Boolean,
+
+      timetables: {
+        weekdays: [
+          {
+            call_id: Number,
+            start_time: String,
+            end_time: String,
+            enabled: Boolean
+          }
+        ],
+        saturday: [
+          {
+            call_id: Number,
+            start_time: String,
+            end_time: String,
+            enabled: Boolean
+          }
+        ],
+        shortenedDay: [
+          {
+            call_id: Number,
+            start_time: String,
+            end_time: String,
+            enabled: Boolean
+          }
+        ],
+      },
     }
   },
   mounted() {
-    this.add_mySQL();
-    // this.received_formattingData();
-    this.entranceСheckCounterСall();
+    this.add_DB(); // Отправка запроса на сервер
+    // this.entranceСheckCounterСall();
   },
   methods: {
-
-    // Работа с серваком 
-    async add_mySQL() {
-      let response = await axios.get('/admin/schedule');
-      // this.timeLesson = response.data;
+    // Получение данных с сервера 
+    async add_DB() {
+      const response = await axios.get('/admin/schedule');
       console.log(response);
-      // this.received_formattingData();
+      this.timetables.weekdays = response.data.weekdays
+      this.timetables.saturday = response.data.saturday
+      this.timetables.shortenedDay = response.data.shortenedDay
+      this.melodies = response.data.melodies
+      this.shortenedDay_enabled = response.data.shortenedDay_enabled
+
+      console.log(this.shortenedDay_enabled);
     },
 
-    async save_mySQL() {
-      this.clawback_formattingData();
-
-      // Отправка данных на сервер
-      axios.post("/save_mySQL.php", { "timeLesson": this.timeLesson }).then((response) => {
-        // Обработка ответа сервера
-        response.data
-          ? console.log("Данные успешно обновлены!")
-          : console.log("Ошибка:", response.data);
-      });
-      // axios.post("/save_mySQL.php", JSON.stringify(this.timeLesson)).then((response) => {
-      //     // Обработка ответа сервера
-      //     response.data.success
-      //         ? console.log("Данные успешно обновлены!")
-      //         : console.log("Ошибка:", response.data.error);
-      // });
-      this.counterСall = 0
-      this.entranceСheckCounterСall();
-      this.received_formattingData();
-    },
-
-    received_formattingData() {
-      this.timeLesson.forEach(element => {
-        element.timeBeginning = element.timeBeginning.slice(0, 5);
-        element.timeEnd = element.timeEnd.slice(0, 5);
-        element.сheckСall = Boolean(Number(`${element.сheckСall}`));
-      });
-      this.trueNnamePleers = this.timeLesson[0].melody
-      console.log(this.timeLesson);
-      console.log(this.trueNnamePleers);
-    },
-
-    clawback_formattingData() {
-      this.timeLesson.forEach(element => {
-        element.timeBeginning = element.timeBeginning + ':00';
-        element.timeEnd = element.timeEnd + ':00';
-        element.сheckСall = String(Number(element.сheckСall));
-      });
-    },
+    
+    // async save_DB() { // сохранение данных на сервер
+    //   // Отправка данных на сервер
+    //   axios.post("/save_DB.php", { "timetables": this.timetables }).then((response) => {
+    //     // Обработка ответа сервера
+    //     response.data
+    //       ? console.log("Данные успешно обновлены!")
+    //       : console.log("Ошибка:", response.data);
+    //   });
+    //   // axios.post("/save_DB.php", JSON.stringify(this.timetables)).then((response) => {
+    //   //     // Обработка ответа сервера
+    //   //     response.data.success
+    //   //         ? console.log("Данные успешно обновлены!")
+    //   //         : console.log("Ошибка:", response.data.error);
+    //   // });
+    //   this.counterСall = 0
+    //   this.entranceСheckCounterСall();
+    // },
 
     abbTable() {
-      this.timeLesson.push({
-        ID: String(this.timeLesson.length),
-        timeBeginning: `00:00`,
-        timeEnd: `00:00`,
-        сheckСall: true,
-        melody: this.trueNnamePleers,
-        college_id: "1"
+      this.timetables.push({
+        call_id: this.timetables.length,
+        start_time: `00:00`,
+        end_time: `00:00`,
+        enabled: true,
       });
 
       this.counterСall++
@@ -141,42 +114,41 @@ export default {
     },
 
     daliteTable() {
-      if (this.timeLesson.length > 0) {
-        if (this.timeLesson[this.timeLesson.length - 1].сheckСall == true) {
+      if (this.timetables.length > 0) {
+        if (this.timetables[this.timetables.length - 1].enabled == true) {
           this.counterСall--
         };
-        this.timeLesson.pop();
+        this.timetables.pop();
 
         this.meterReadingСall();
       };
     },
 
     changelPayer(x) {
-      console.log(x);
-      this.trueNnamePleers = x;
-      this.timeLesson.forEach(element => {
+      this.melodie_trueID = x;
+      this.timetables.forEach(element => {
         element.melody = x;
       });
-      console.log(this.timeLesson);
+      console.log(this.timetables);
     },
 
     getAllCheckСall() {
       if (this.allCheckСall == true) {
-        for (let i = 0; i < this.timeLesson.length; i++) {
-          this.timeLesson[`${i}`] = {
-            timeBeginning: this.timeLesson[`${i}`].timeBeginning,
-            timeEnd: this.timeLesson[`${i}`].timeEnd,
-            сheckСall: true
+        for (let i = 0; i < this.timetables.length; i++) {
+          this.timetables[`${i}`] = {
+            start_time: this.timetables[`${i}`].start_time,
+            end_time: this.timetables[`${i}`].end_time,
+            enabled: true
           };
         };
 
-        this.counterСall = this.timeLesson.length;
+        this.counterСall = this.timetables.length;
       } else {
-        for (let i = 0; i < this.timeLesson.length; i++) {
-          this.timeLesson[`${i}`] = {
-            timeBeginning: this.timeLesson[`${i}`].timeBeginning,
-            timeEnd: this.timeLesson[`${i}`].timeEnd,
-            сheckСall: false
+        for (let i = 0; i < this.timetables.length; i++) {
+          this.timetables[`${i}`] = {
+            start_time: this.timetables[`${i}`].start_time,
+            end_time: this.timetables[`${i}`].end_time,
+            enabled: false
           };
         };
 
@@ -187,7 +159,7 @@ export default {
     },
 
     CounterСall(x) {
-      x.сheckСall == true ?
+      x.enabled == true ?
         this.counterСall++ :
         this.counterСall--;
 
@@ -195,7 +167,7 @@ export default {
     },
 
     meterReadingСall() {
-      let z = this.timeLesson.length;
+      let z = this.timetables.length;
       let y = this.counterСall;
 
       if (z == y) {
@@ -210,8 +182,8 @@ export default {
     },
 
     entranceСheckCounterСall() {
-      for (let i = 0; i < this.timeLesson.length; i++) {
-        if (this.timeLesson[`${i}`].сheckСall == true) {
+      for (let i = 0; i < this.timetables.length; i++) {
+        if (this.timetables[`${i}`].enabled == true) {
           this.counterСall++
         };
       };
@@ -243,11 +215,11 @@ export default {
                 @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
           </tr>
 
-          <tr v-for=" (x, index) in timeLesson" :key="timeLesson.ID">
+          <tr v-for=" (x, index) in timetables" :key="timetables.call_id">
             <td class="td_row_1">{{ index + 1 }}</td>
-            <td class="td_row_2"><input name="timeBeginning" v-model="x.timeBeginning" type="time"></td>
-            <td class="td_row_3"><input name="timeEnd" v-model="x.timeEnd" type="time"></td>
-            <td class="td_row_4"><input name="сheckСall" v-model="x.сheckСall" type="checkbox" @change="CounterСall(x)">
+            <td class="td_row_2"><input name="start_time" v-model="x.start_time" type="time"></td>
+            <td class="td_row_3"><input name="end_time" v-model="x.end_time" type="time"></td>
+            <td class="td_row_4"><input name="enabled" v-model="x.enabled" type="checkbox" @change="CounterСall(x)">
             </td>
           </tr>
         </table>
@@ -276,11 +248,11 @@ export default {
             <th class="input"><el-checkbox :indeterminate="isIndeterminate" v-model="allCheckСall"
                 @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
           </tr>
-          <tr v-for=" (x, index) in timeLesson" :key="timeLesson.ID">
+          <tr v-for=" (x, index) in timetables" :key="timetables.call_id">
             <td class="td_row_1">{{ index + 1 }}</td>
-            <td class="td_row_2"><input name="timeBeginning" v-model="x.timeBeginning" type="time"></td>
-            <td class="td_row_3"><input name="timeEnd" v-model="x.timeEnd" type="time"></td>
-            <td class="td_row_4"><input name="сheckСall" v-model="x.сheckСall" type="checkbox" @change="CounterСall(x)">
+            <td class="td_row_2"><input name="start_time" v-model="x.start_time" type="time"></td>
+            <td class="td_row_3"><input name="end_time" v-model="x.end_time" type="time"></td>
+            <td class="td_row_4"><input name="enabled" v-model="x.enabled" type="checkbox" @change="CounterСall(x)">
             </td>
           </tr>
         </table>
@@ -303,7 +275,7 @@ export default {
     <div class="schedule_shortenedDay_panel col">
       <h3 class="shortenedDay_batten">
         <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+          <input class="form-check-input" type="checkbox" role="switch" call_id="flexSwitchCheckDefault">
           <label class="form-check-label" for="flexSwitchCheckDefault">Сокращённый день</label>
         </div>
       </h3>
@@ -317,11 +289,11 @@ export default {
             <th class="input"><el-checkbox :indeterminate="isIndeterminate" v-model="allCheckСall"
                 @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
           </tr>
-          <tr v-for=" (x, index) in timeLesson" :key="timeLesson.ID">
+          <tr v-for=" (x, index) in timetables" :key="timetables.call_id">
             <td class="td_row_1">{{ index + 1 }}</td>
-            <td class="td_row_2"><input name="timeBeginning" v-model="x.timeBeginning" type="time"></td>
-            <td class="td_row_3"><input name="timeEnd" v-model="x.timeEnd" type="time"></td>
-            <td class="td_row_4"><input name="сheckСall" v-model="x.сheckСall" type="checkbox" @change="CounterСall(x)">
+            <td class="td_row_2"><input name="start_time" v-model="x.start_time" type="time"></td>
+            <td class="td_row_3"><input name="end_time" v-model="x.end_time" type="time"></td>
+            <td class="td_row_4"><input name="enabled" v-model="x.enabled" type="checkbox" @change="CounterСall(x)">
             </td>
           </tr>
         </table>
@@ -340,8 +312,8 @@ export default {
 
     <div class="melody_panel col-lg col-md-auto">
       <h3>Выбрать мелодию</h3>
-      <el-radio-group class="radio_form-check" v-model="this.trueNnamePleers">
-        <el-radio name="melody" class="form-check" v-for=" x in namePleers" :value="x" size="large"
+      <el-radio-group class="radio_form-check" v-model="this.melodies.enabled">
+        <el-radio name="melody" class="form-check" v-for=" x in melodies" :value="x" size="large"
           @click="changelPayer(x)">
           {{ x }}
         </el-radio>
@@ -358,7 +330,7 @@ export default {
 
 
   <div class="button_save">
-    <button class="btn btn-secondary" @click="save_mySQL()">
+    <button class="btn btn-secondary" @click="save_DB()">
       Сохранить
     </button>
   </div>
@@ -369,7 +341,6 @@ export default {
 
 
 <style scoped>
-
 * {
   margin: 0;
 }
@@ -378,6 +349,7 @@ h1 {
   text-align: center;
   margin: 30px 30px 25px 30px;
 }
+
 h3 {
   margin-top: 25px;
   margin-bottom: 10px;
@@ -396,6 +368,7 @@ h3 {
   display: flex;
   gap: 0px;
 }
+
 .melody_panel .radio_form-check .form-check {
   max-width: 610px;
   overflow: auto;
@@ -407,29 +380,35 @@ h3 {
   padding: 0 10px;
   margin-left: 1px;
 }
+
 table {
   width: 100%;
 }
+
 td,
 th {
   border: 1px solid black;
   text-align: center;
 }
+
 th {
   background-color: azure;
 }
+
 .td_row_2 input,
 .td_row_3 input {
   width: 100%;
   text-align: center;
   border: 0px solid black;
 }
+
 .cntent_table_button {
   --bs-gutter-x: 0;
   display: flex;
   justify-content: center;
   margin-top: 7px;
 }
+
 .cntent_table_button .el-button {
   width: 100%;
   width: 10vw;
@@ -450,6 +429,7 @@ th {
   justify-content: center;
   align-content: center;
 }
+
 .button_save button {
   width: 70%;
 }
@@ -458,6 +438,7 @@ th {
 h3 input {
   transform: scale(0.7);
 }
+
 .shortenedDay_batten .form-check {
   display: flex;
   align-items: flex-end;
@@ -509,6 +490,7 @@ h3 input {
 .input-file input[type=file]:disabled+span {
   background-color: #eee;
 }
+
 /* \\\\\\\\\\ */
 
 

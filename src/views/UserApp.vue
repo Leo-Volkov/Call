@@ -95,8 +95,6 @@ export default {
 </script>
 
 
-
-
 <template>
   <header class="row">
     <!-- Название организации -->

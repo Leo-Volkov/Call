@@ -158,8 +158,7 @@ app.get('/user/schedule', async (rep, res) => {
       enabled: 1,
     },
   })
-  // ///////////////////////////////////////////////////////////////////
-  if (types[0].id != 3) {
+  if (types[0].id == 3) {
     data.schedule_type = 'ShortenedDay'
   } else {
     let Dat = new Date()
@@ -177,11 +176,11 @@ app.get('/user/schedule', async (rep, res) => {
   // Получение расписания звонков
   let timetable
   if (data.schedule_type === 'ShortenedDay') {
-    timetable = received_formattingData_time(await ShortenedDay.findAll())
+    timetable = received_1_formattingData_time(await ShortenedDay.findAll())
   } else if (data.schedule_type === 'Saturday') {
-    timetable = received_formattingData_time(await Saturday.findAll())
+    timetable = received_1_formattingData_time(await Saturday.findAll())
   } else if (data.schedule_type === 'Weekdays') {
-    timetable = received_formattingData_time(await Weekdays.findAll())
+    timetable = received_1_formattingData_time(await Weekdays.findAll())
   }
 
   // Получение милодии звонка
@@ -231,9 +230,9 @@ app.get('/admin/schedule', async (rep, res) => {
   await sequelize.sync({ alter: true })
   console.log('Таблицы созданы') //INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0')
 
-  const weekdays = received_formattingData_time(await Weekdays.findAll())
-  const saturday = received_formattingData_time(await Saturday.findAll())
-  const shortenedDay = received_formattingData_time(await ShortenedDay.findAll())
+  const weekdays = received_1_formattingData_time(await Weekdays.findAll())
+  const saturday = received_1_formattingData_time(await Saturday.findAll())
+  const shortenedDay = received_1_formattingData_time(await ShortenedDay.findAll())
   const melodies = await Melodies.findAll()
   const shortenedDay_enabled = await Types.findOne({
     attributes: ['enabled'],
@@ -247,18 +246,17 @@ app.get('/admin/schedule', async (rep, res) => {
     saturday,
     shortenedDay,
     melodies,
-    shortenedDay_enabled,
+    shortenedDay_enabled: shortenedDay_enabled.enabled,
   })
 })
 
-
 // проверка функции
 ;(async () => {
-  get_array_timetable_call(await Weekdays.findAll())
+  // received_1_formattingData_time(await Weekdays.findAll())
 })() //
 
 // Функции
-function received_formattingData_time(table) {
+function received_1_formattingData_time(table) {
   table.forEach(element => {
     element.start_time = element.start_time.slice(0, 5)
     element.end_time = element.end_time.slice(0, 5)
@@ -266,11 +264,19 @@ function received_formattingData_time(table) {
   return table
 }
 
+function received_2_formattingData_time(table) {
+  table.forEach(element => {
+    element.start_time = element.start_time + ':00'
+    element.end_time = element.end_time + ':00'
+  })
+  return table
+}
+
 function get_array_timetable_call(new_table) {
-  let table = received_formattingData_time(new_table)
+  let table = received_1_formattingData_time(new_table)
   const timeCall = {
     time: [],
-    timetable: []
+    timetable: [],
   }
 
   const start_Lesson_1 = []
@@ -292,11 +298,11 @@ function get_array_timetable_call(new_table) {
 
     timeCall.timetable.push({
       start_Lesson: start_Lesson_2[index],
-      end_Lesson: end_Lesson[index]
+      end_Lesson: end_Lesson[index],
     })
   })
   timeCall.time.push(...start_Lesson_1, ...end_Lesson, ...start_Lesson_2)
   timeCall.time = (arr => [...new Set(arr)])(timeCall.time).sort()
-  
+
   return timeCall
 }
