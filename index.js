@@ -147,9 +147,7 @@ const Users = sequelize.define(
 // запросы
 // Отправка расписания пользователю
 app.get('/user/schedule', async (rep, res) => {
-  const data = {
-    schedule_type: '',
-  }
+  let schedule_type = ''
 
   // получение типа расписаиния
   const types = await Types.findAll({
@@ -159,27 +157,27 @@ app.get('/user/schedule', async (rep, res) => {
     },
   })
   if (types[0].id == 3) {
-    data.schedule_type = 'ShortenedDay'
+    schedule_type = 'ShortenedDay'
   } else {
     let Dat = new Date()
     if (Dat.getDay() == 6) {
-      data.schedule_type = 'Saturday'
+      schedule_type = 'Saturday'
     } else if (Dat.getDay() == 0) {
       // Воскрисение: звонки и расписание отключено
       res.send()
       return
     } else {
-      data.schedule_type = 'Weekdays'
+      schedule_type = 'Weekdays'
     }
   }
 
   // Получение расписания звонков
   let timetable
-  if (data.schedule_type === 'ShortenedDay') {
+  if (schedule_type === 'ShortenedDay') {
     timetable = received_1_formattingData_time(await ShortenedDay.findAll())
-  } else if (data.schedule_type === 'Saturday') {
+  } else if (schedule_type === 'Saturday') {
     timetable = received_1_formattingData_time(await Saturday.findAll())
-  } else if (data.schedule_type === 'Weekdays') {
+  } else if (schedule_type === 'Weekdays') {
     timetable = received_1_formattingData_time(await Weekdays.findAll())
   }
 
