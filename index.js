@@ -248,6 +248,10 @@ app.get('/admin/schedule', async (rep, res) => {
   })
 })
 
+app.post('/admin/save_DB', async (rep, res) => {
+  
+})
+
 // проверка функции
 ;(async () => {
   // received_1_formattingData_time(await Weekdays.findAll())

@@ -10,7 +10,6 @@ export default {
           enabled: Boolean
         }
       ],
-      // melodie_trueID: ``,
 
       allCheckСall: {
         weekdays: Boolean,
@@ -65,42 +64,31 @@ export default {
   },
   mounted() {
     this.add_DB(); // Отправка запроса на сервер
-    // this.entranceСheckCounterСall();
   },
   methods: {
-    // Получение данных с сервера 
-    async add_DB() {
+
+    async add_DB() { // Получение данных с сервера
       const response = await axios.get('/admin/schedule');
-      console.log(response);
       this.timetables.weekdays = response.data.weekdays
       this.timetables.saturday = response.data.saturday
       this.timetables.shortenedDay = response.data.shortenedDay
       this.melodies = response.data.melodies
       this.shortenedDay_enabled = response.data.shortenedDay_enabled
-
-      console.log(this.shortenedDay_enabled);
     },
 
-    
-    // async save_DB() { // сохранение данных на сервер
-    //   // Отправка данных на сервер
-    //   axios.post("/save_DB.php", { "timetables": this.timetables }).then((response) => {
-    //     // Обработка ответа сервера
-    //     response.data
-    //       ? console.log("Данные успешно обновлены!")
-    //       : console.log("Ошибка:", response.data);
-    //   });
-    //   // axios.post("/save_DB.php", JSON.stringify(this.timetables)).then((response) => {
-    //   //     // Обработка ответа сервера
-    //   //     response.data.success
-    //   //         ? console.log("Данные успешно обновлены!")
-    //   //         : console.log("Ошибка:", response.data.error);
-    //   // });
-    //   this.counterСall = 0
-    //   this.entranceСheckCounterСall();
-    // },
 
-    abbTable() {
+    async save_DB() { // сохранение данных на сервер
+      // Отправка данных на сервер
+      axios.post("/admin/save_DB", { "timetables": this.timetables, "melodies": this.melodies }).then((response) => {
+        // Обработка ответа сервера
+        // response.data
+        //   ? console.log("Данные успешно обновлены!")
+        //   : console.log("Ошибка:", response.data);
+      });
+      this.counterСall = 0
+    },
+
+    abbTable() { // добавление нового урока
       this.timetables.push({
         call_id: this.timetables.length,
         start_time: `00:00`,
@@ -113,7 +101,7 @@ export default {
       this.meterReadingСall();
     },
 
-    daliteTable() {
+    daliteTable() { // удаление урока
       if (this.timetables.length > 0) {
         if (this.timetables[this.timetables.length - 1].enabled == true) {
           this.counterСall--
@@ -124,15 +112,15 @@ export default {
       };
     },
 
-    changelPayer(x) {
-      this.melodie_trueID = x;
-      this.timetables.forEach(element => {
-        element.melody = x;
-      });
-      console.log(this.timetables);
-    },
+    // changelPayer(x) { 
+    //   this.melodie_trueID = x;
+    //   this.timetables.forEach(element => {
+    //     element.melody = x;
+    //   });
+    //   console.log(this.timetables);
+    // },
 
-    getAllCheckСall() {
+    getAllCheckСall() { // включение и выключение всех звонков
       if (this.allCheckСall == true) {
         for (let i = 0; i < this.timetables.length; i++) {
           this.timetables[`${i}`] = {
