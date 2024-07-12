@@ -127,8 +127,8 @@ const Types = sequelize.define(
     timestamps: false,
   },
 )
-const Users = sequelize.define(
-  'users',
+const UsersAdmin = sequelize.define(
+  'users_admin',
   {
     logen: DataTypes.STRING,
     password: DataTypes.STRING,
@@ -199,7 +199,7 @@ app.post('/login/verification', async (req, res) => {
   const value_logen = req.body.value_logen
 
   try {
-    const resurs = await Users.findAll({
+    const resurs = await UsersAdmin.findAll({
       where: {
         logen: value_logen,
       },
@@ -248,9 +248,7 @@ app.get('/admin/schedule', async (rep, res) => {
   })
 })
 
-app.post('/admin/save_DB', async (rep, res) => {
-  
-})
+app.post('/admin/save_DB', async (rep, res) => {})
 
 // проверка функции
 ;(async () => {
