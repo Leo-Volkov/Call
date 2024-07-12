@@ -1,7 +1,14 @@
-<script>
+<script lang="ts">
+
+import { defineComponent } from "vue";
+import { ref } from 'vue';
+// const dayjs = require('dayjs')
 import axios from 'axios';
 
-export default {
+export default defineComponent({
+  components: {
+
+  },
   data() {
     return {
       melodies: [
@@ -27,9 +34,9 @@ export default {
         shortenedDay: Boolean
       },
 
-      allCheckСall: false,
-      counterСall: 0,
-      isIndeterminate: false,
+      // allCheckСall: false,
+      // counterСall: 0,
+      // isIndeterminate: false,
 
 
       shortenedDay_enabled: Boolean,
@@ -76,111 +83,55 @@ export default {
       this.shortenedDay_enabled = response.data.shortenedDay_enabled
     },
 
-
-    async save_DB() { // сохранение данных на сервер
-      // Отправка данных на сервер
-      axios.post("/admin/save_DB", { "timetables": this.timetables, "melodies": this.melodies }).then((response) => {
-        // Обработка ответа сервера
-        // response.data
-        //   ? console.log("Данные успешно обновлены!")
-        //   : console.log("Ошибка:", response.data);
-      });
-      this.counterСall = 0
-    },
-
-    abbTable() { // добавление нового урока
-      this.timetables.push({
-        call_id: this.timetables.length,
-        start_time: `00:00`,
-        end_time: `00:00`,
-        enabled: true,
-      });
-
-      this.counterСall++
-
-      this.meterReadingСall();
-    },
-
-    daliteTable() { // удаление урока
-      if (this.timetables.length > 0) {
-        if (this.timetables[this.timetables.length - 1].enabled == true) {
-          this.counterСall--
-        };
-        this.timetables.pop();
-
-        this.meterReadingСall();
-      };
-    },
-
-    // changelPayer(x) { 
-    //   this.melodie_trueID = x;
-    //   this.timetables.forEach(element => {
-    //     element.melody = x;
+    // async save_DB() { // сохранение данных на сервер
+    //   // Отправка данных на сервер
+    //   axios.post("/admin/save_DB", { "timetables": this.timetables, "melodies": this.melodies }).then((response) => {
+    //     // Обработка ответа сервера
+    //     // response.data
+    //     //   ? console.log("Данные успешно обновлены!")
+    //     //   : console.log("Ошибка:", response.data);
     //   });
-    //   console.log(this.timetables);
+    //   this.counterСall = 0
     // },
 
-    getAllCheckСall() { // включение и выключение всех звонков
-      if (this.allCheckСall == true) {
-        for (let i = 0; i < this.timetables.length; i++) {
-          this.timetables[`${i}`] = {
-            start_time: this.timetables[`${i}`].start_time,
-            end_time: this.timetables[`${i}`].end_time,
-            enabled: true
-          };
-        };
-
-        this.counterСall = this.timetables.length;
-      } else {
-        for (let i = 0; i < this.timetables.length; i++) {
-          this.timetables[`${i}`] = {
-            start_time: this.timetables[`${i}`].start_time,
-            end_time: this.timetables[`${i}`].end_time,
-            enabled: false
-          };
-        };
-
-        this.counterСall = 0;
+    onAdd_RowTable(indexTables: string) { // добавление нового урока в таблицу 
+      const data_content_RowTebel = {
+        call_id: this.timetables.weekdays[this.timetables.weekdays.length - 1].call_id + 1,
+        start_time: "00:00",
+        end_time: "00:00",
+        enabled: true
       };
 
-      this.isIndeterminate = false;
-    },
-
-    CounterСall(x) {
-      x.enabled == true ?
-        this.counterСall++ :
-        this.counterСall--;
-
-      this.meterReadingСall();
-    },
-
-    meterReadingСall() {
-      let z = this.timetables.length;
-      let y = this.counterСall;
-
-      if (z == y) {
-        this.isIndeterminate = false;
-        this.allCheckСall = true;
-      } else if (y == 0) {
-        this.isIndeterminate = false;
-        this.allCheckСall = false;
-      } else {
-        this.isIndeterminate = true;
+      switch (indexTables) {
+        case "weekdays":
+          this.timetables.weekdays.push(data_content_RowTebel);
+          break;
+        case "saturday":
+          this.timetables.saturday.push(data_content_RowTebel);
+          break;
+        case "shortenedDay":
+          this.timetables.shortenedDay.push(data_content_RowTebel);
+          break;
       };
     },
 
-    entranceСheckCounterСall() {
-      for (let i = 0; i < this.timetables.length; i++) {
-        if (this.timetables[`${i}`].enabled == true) {
-          this.counterСall++
-        };
+    delete_RowTable(indexTables: string) { // удаление урока из таблицы
+      switch (indexTables) {
+        case "weekdays":
+          this.timetables.weekdays.splice(this.timetables.weekdays.length - 1);
+          break;
+        case "saturday":
+          this.timetables.saturday.splice(this.timetables.saturday.length - 1);
+          break;
+        case "shortenedDay":
+          this.timetables.shortenedDay.splice(this.timetables.shortenedDay.length - 1);
+          break;
       };
+    },
 
-      this.meterReadingСall();
-    }
 
   }
-}
+})
 </script>
 
 
@@ -188,36 +139,32 @@ export default {
 
 <template>
   <h1>Админка</h1>
+
   <div class="row">
 
     <div class="schedule_weekdays_panel col">
-      <h3>Расписание на будни</h3>
+      <h2>Расписание на будни</h2>
       <div class="cntent_table">
-        <table>
-          <tr>
-            <th>№</th>
-            <th>Начало звонка</th>
-            <th>Конец звонка</th>
-            <!--- включение и выключение всех звонков  -->
-            <th class="input"><el-checkbox :indeterminate="isIndeterminate" v-model="allCheckСall"
-                @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
-          </tr>
-
-          <tr v-for=" (x, index) in timetables" :key="timetables.call_id">
-            <td class="td_row_1">{{ index + 1 }}</td>
-            <td class="td_row_2"><input name="start_time" v-model="x.start_time" type="time"></td>
-            <td class="td_row_3"><input name="end_time" v-model="x.end_time" type="time"></td>
-            <td class="td_row_4"><input name="enabled" v-model="x.enabled" type="checkbox" @change="CounterСall(x)">
-            </td>
-          </tr>
-        </table>
+        <el-table :data="timetables.weekdays" border>
+          <el-table-column prop="call_id" label="№" width="50" />
+          <el-table-column prop="start_time" label="Начало урока">
+            <template #default="scope">
+              <!-- https://element-plus.org/en-US/component/time-select.html -->
+            </template>
+          </el-table-column>
+          <el-table-column prop="end_time" label="Конец урока">
+            <template #default="scope">
+              <input name="end_time" v-model="scope.row.end_time" type="time">
+            </template>
+          </el-table-column>
+        </el-table>
 
         <el-row class="cntent_table_button">
-          <el-button type="info" class="col" @click="daliteTable()">
-            Удалить последнее время звонка
+          <el-button type="info" class="col" @click="onAdd_RowTable('weekdays')">
+            Добавить
           </el-button>
-          <el-button type="info" class="col" @click="abbTable()">
-            Добавить новое время звонка
+          <el-button type="info" class="col" @click="delete_RowTable('weekdays')">
+            Удалить
           </el-button>
         </el-row>
       </div>
@@ -225,34 +172,9 @@ export default {
 
 
     <div class="schedule_saturday_panel col-lg">
-      <h3>Расписание на субботу</h3>
+      <h2>Расписание на субботу</h2>
       <div class="cntent_table">
-        <table>
-          <tr>
-            <th>№</th>
-            <th>Начало звонка</th>
-            <th>Конец звонка</th>
-            <!--- включение и выключение всех звонков  -->
-            <th class="input"><el-checkbox :indeterminate="isIndeterminate" v-model="allCheckСall"
-                @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
-          </tr>
-          <tr v-for=" (x, index) in timetables" :key="timetables.call_id">
-            <td class="td_row_1">{{ index + 1 }}</td>
-            <td class="td_row_2"><input name="start_time" v-model="x.start_time" type="time"></td>
-            <td class="td_row_3"><input name="end_time" v-model="x.end_time" type="time"></td>
-            <td class="td_row_4"><input name="enabled" v-model="x.enabled" type="checkbox" @change="CounterСall(x)">
-            </td>
-          </tr>
-        </table>
 
-        <el-row class="cntent_table_button">
-          <el-button type="info" class="col" @click="daliteTable()">
-            Удалить последнее время звонка
-          </el-button>
-          <el-button type="info" class="col" @click="abbTable()">
-            Добавить новое время звонка
-          </el-button>
-        </el-row>
       </div>
     </div>
   </div>
@@ -261,67 +183,45 @@ export default {
   <div class="row">
 
     <div class="schedule_shortenedDay_panel col">
-      <h3 class="shortenedDay_batten">
+      <h2 class="shortenedDay_batten">
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" role="switch" call_id="flexSwitchCheckDefault">
           <label class="form-check-label" for="flexSwitchCheckDefault">Сокращённый день</label>
         </div>
-      </h3>
-      <div class="cntent_table">
-        <table>
-          <tr>
-            <th>№</th>
-            <th>Начало звонка</th>
-            <th>Конец звонка</th>
-            <!--- включение и выключение всех звонков  -->
-            <th class="input"><el-checkbox :indeterminate="isIndeterminate" v-model="allCheckСall"
-                @change="getAllCheckСall()" type="checkbox"></el-checkbox></th>
-          </tr>
-          <tr v-for=" (x, index) in timetables" :key="timetables.call_id">
-            <td class="td_row_1">{{ index + 1 }}</td>
-            <td class="td_row_2"><input name="start_time" v-model="x.start_time" type="time"></td>
-            <td class="td_row_3"><input name="end_time" v-model="x.end_time" type="time"></td>
-            <td class="td_row_4"><input name="enabled" v-model="x.enabled" type="checkbox" @change="CounterСall(x)">
-            </td>
-          </tr>
-        </table>
+      </h2>
 
-        <el-row class="cntent_table_button">
-          <el-button type="info" class="col" @click="daliteTable()">
-            Удалить последнее время звонка
-          </el-button>
-          <el-button type="info" class="col" @click="abbTable()">
-            Добавить новое время звонка
-          </el-button>
-        </el-row>
+      <div class="cntent_table">
+
       </div>
     </div>
 
 
     <div class="melody_panel col-lg col-md-auto">
-      <h3>Выбрать мелодию</h3>
-      <el-radio-group class="radio_form-check" v-model="this.melodies.enabled">
+      <h2>Выбрать мелодию</h2>
+      <!-- <el-radio-group class="radio_form-check" v-model="this.melodies.enabled">
         <el-radio name="melody" class="form-check" v-for=" x in melodies" :value="x" size="large"
           @click="changelPayer(x)">
           {{ x }}
         </el-radio>
-      </el-radio-group>
+      </el-radio-group> -->
 
-      <label class="add_melody input-file">
+      <!-- <label class="add_melody input-file">
         <input type="file" name="file" accept=".mp3">
         <span>Выберите файл</span>
-        <!-- https://sky.pro/wiki/html/obrabotka-sobytiya-vybora-fayla-v-html-input-type-file/ -->
-      </label>
+      </label> -->
+      <!-- https://sky.pro/wiki/html/obrabotka-sobytiya-vybora-fayla-v-html-input-type-file/ -->
     </div>
 
   </div>
 
 
   <div class="button_save">
-    <button class="btn btn-secondary" @click="save_DB()">
+    <!-- <button class="btn btn-secondary" @click="save_DB()">
       Сохранить
-    </button>
+    </button> -->
   </div>
+
+
 
 </template>
 
@@ -338,7 +238,7 @@ h1 {
   margin: 30px 30px 25px 30px;
 }
 
-h3 {
+h2 {
   margin-top: 25px;
   margin-bottom: 10px;
   margin-left: 7px;
@@ -369,26 +269,6 @@ h3 {
   margin-left: 1px;
 }
 
-table {
-  width: 100%;
-}
-
-td,
-th {
-  border: 1px solid black;
-  text-align: center;
-}
-
-th {
-  background-color: azure;
-}
-
-.td_row_2 input,
-.td_row_3 input {
-  width: 100%;
-  text-align: center;
-  border: 0px solid black;
-}
 
 .cntent_table_button {
   --bs-gutter-x: 0;
@@ -401,10 +281,6 @@ th {
   width: 100%;
   width: 10vw;
   min-width: 145px;
-}
-
-.schedule_shortenedDay_panel th {
-  background-color: rgb(182, 175, 49);
 }
 
 
@@ -423,14 +299,8 @@ th {
 }
 
 
-h3 input {
+h2 input {
   transform: scale(0.7);
-}
-
-.shortenedDay_batten .form-check {
-  display: flex;
-  align-items: flex-end;
-  gap: 2px;
 }
 
 /* TODO кнопка выбора файла */
@@ -479,33 +349,9 @@ h3 input {
   background-color: #eee;
 }
 
-/* \\\\\\\\\\ */
-
-
-/* TODO медиа раздел */
 @media (max-width: 768px) {
-  .radio_form-check {
-    row-gap: 0px;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  table {
-    font-size: 2vw;
-  }
-
   .cntent_table_button .el-button {
     font-size: 2.4vw;
-  }
-}
-
-@media (min-width: 769px) {
-  .radio_form-check {
-    gap: 0px;
-    flex-direction: column;
-    align-content: flex-start;
-    align-items: flex-start;
   }
 }
 </style>

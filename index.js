@@ -1,4 +1,5 @@
 // Инпорт библеотек
+// const dayjs = require('dayjs')
 const express = require(`express`)
 const app = express()
 const { Sequelize, DataTypes, Model } = require('sequelize')
@@ -39,7 +40,7 @@ const sequelize = new Sequelize(
 
 // Проверка ощибок при подключении к БД
 try {
-  ;(async () => {
+  ; (async () => {
     await sequelize.authenticate()
   })() //
   console.log('Соединение успешно установлено.')
@@ -224,20 +225,20 @@ app.post('/login/verification', async (req, res) => {
 // Отправка данных в админку
 app.get('/admin/schedule', async (rep, res) => {
   // эта строка существует для автоматизации создания таблиц в базе даных
-  await sequelize.sync() // Создаёт таблицы, если их нет
-  await sequelize.sync({ alter: true })
-  console.log('Таблицы созданы') //INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0')
+  await sequelize.sync(); // Создаёт таблицы, если их нет
+  await sequelize.sync({ alter: true });
+  console.log('Таблицы созданы'); //INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0')
 
-  const weekdays = received_1_formattingData_time(await Weekdays.findAll())
-  const saturday = received_1_formattingData_time(await Saturday.findAll())
-  const shortenedDay = received_1_formattingData_time(await ShortenedDay.findAll())
-  const melodies = await Melodies.findAll()
+  const weekdays = received_1_formattingData_time(await Weekdays.findAll());
+  const saturday = received_1_formattingData_time(await Saturday.findAll());
+  const shortenedDay = received_1_formattingData_time(await ShortenedDay.findAll());
+  const melodies = await Melodies.findAll();
   const shortenedDay_enabled = await Types.findOne({
-    attributes: ['enabled'],
-    where: {
-      type: 'shortenedDay',
-    },
-  })
+          attributes: ['enabled'],
+          where: {
+            type: 'shortenedDay',
+          },
+        });
 
   res.send({
     weekdays,
@@ -248,16 +249,16 @@ app.get('/admin/schedule', async (rep, res) => {
   })
 })
 
-app.post('/admin/save_DB', async (rep, res) => {})
+app.post('/admin/save_DB', async (rep, res) => { })
 
-// проверка функции
-;(async () => {
-  // received_1_formattingData_time(await Weekdays.findAll())
-})() //
+  // проверка функции
+  ; (async () => {
+    // received_1_formattingData_time(await Weekdays.findAll())
+  })() //
 
 // Функции
 function received_1_formattingData_time(table) {
-  table.forEach(element => {
+  table.forEach((element) => {
     element.start_time = element.start_time.slice(0, 5)
     element.end_time = element.end_time.slice(0, 5)
   })
@@ -265,7 +266,7 @@ function received_1_formattingData_time(table) {
 }
 
 function received_2_formattingData_time(table) {
-  table.forEach(element => {
+  table.forEach((element) => {
     element.start_time = element.start_time + ':00'
     element.end_time = element.end_time + ':00'
   })
@@ -302,7 +303,7 @@ function get_array_timetable_call(new_table) {
     })
   })
   timeCall.time.push(...start_Lesson_1, ...end_Lesson, ...start_Lesson_2)
-  timeCall.time = (arr => [...new Set(arr)])(timeCall.time).sort()
+  timeCall.time = ((arr) => [...new Set(arr)])(timeCall.time).sort()
 
   return timeCall
 }
