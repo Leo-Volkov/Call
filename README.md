@@ -1,29 +1,19 @@
-# Звонок_vue-project
+# Проект расписания звонуков
 
-This template should help get you started developing with Vue 3 in Vite.
+## Рекомендуемая настройка IDE
 
-## Recommended IDE Setup
+1. [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
+## Настройка проекта
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Локальный запуск кода
+<u>Запуск Vue</u>: `npm run dev`
+<u>Запуск сервера</u>: `npm run start`
 
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
+### Компиляция и минификация для производства
 ```sh
 npm run build
 ```
