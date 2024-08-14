@@ -233,6 +233,12 @@ app.get('/admin/schedule', async (rep, res) => {
   const saturday = received_1_formattingData_time(await Saturday.findAll());
   const shortenedDay = received_1_formattingData_time(await ShortenedDay.findAll());
   const melodies = await Melodies.findAll();
+  const melodie_id = await Melodies.findAll({
+    attributes: ['id'],
+    where: {
+      enabled: 1,
+    },
+  });
   const shortenedDay_enabled = await Types.findOne({
           attributes: ['enabled'],
           where: {
@@ -245,11 +251,84 @@ app.get('/admin/schedule', async (rep, res) => {
     saturday,
     shortenedDay,
     melodies,
+    melodie_id: melodie_id[0].id,
     shortenedDay_enabled: shortenedDay_enabled.enabled,
   })
 })
 
-app.post('/admin/save_DB', async (rep, res) => { })
+app.post('/admin/save_DB', async (rep, res) => {
+  const weekdays = received_2_formattingData_time(rep.body.weekdays);
+  const saturday = received_2_formattingData_time(rep.body.saturday);
+  const shortenedDay = received_2_formattingData_time(rep.body.shortenedDay);
+  const melodies = rep.body.melodies;
+  const melodie_id = rep.body.melodie_id;
+  const shortenedDay_enabled = rep.body.shortenedDay_enabled;
+
+
+
+  melodies.forEach((element) => {
+    if (element.enabled === true) element.enabled = false;
+  });
+  melodies.forEach((element, index) => {
+    if (melodie_id - 1 === index) element.enabled = true;
+  });
+  await Weekdays.destroy({
+    truncate: true,
+  });
+  await Weekdays.bulkCreate(weekdays);
+  
+  await Saturday.destroy({
+    truncate: true,
+  })
+  await Saturday.bulkCreate(saturday);
+  
+  await ShortenedDay.destroy({
+    truncate: true, 
+  });
+  await ShortenedDay.bulkCreate(shortenedDay);
+
+  await Melodies.destroy({
+    truncate: true,
+  });
+  await Melodies.bulkCreate(melodies);
+  if (shortenedDay_enabled === true) {
+    await Types.update(
+      { enabled: false },
+      { where: { type: 'weekdays' } }
+    );
+    await Types.update(
+      { enabled: false },
+      { where: { type: 'saturday' } }
+    );
+    await Types.update(
+      { enabled: true },
+      { where: { type: 'shortenedDay' } }
+    );
+  } else {
+    await Types.update(
+      { enabled: true },
+      { where: { type: 'weekdays' } }
+    );
+    await Types.update(
+      { enabled: true },
+      { where: { type: 'saturday' } }
+    );
+    await Types.update(
+      { enabled: false },
+      { where: { type: 'shortenedDay' } }
+    );
+  };
+
+  res.send({
+    weekdays,
+    saturday,
+    shortenedDay,
+    melodies,
+    melodie_id,
+    shortenedDay_enabled,
+  });
+
+})
 
   // проверка функции
   ; (async () => {
