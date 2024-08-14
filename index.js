@@ -221,7 +221,8 @@ app.get('/admin/schedule', async (rep, res) => {
   // эта строка существует для автоматизации создания таблиц в базе даных
   await sequelize.sync(); // Создаёт таблицы, если их нет
   await sequelize.sync({ alter: true });
-  console.log('Таблицы созданы'); //INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0')
+  await sequelize.query('INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ("1", "weekdays", "1"), ("2", "saturday", "1"), ("3", "shortenedDay", "0")');
+  console.log('Таблицы созданы'); 
 
   const weekdays = received_1_formattingData_time(await Weekdays.findAll());
   const saturday = received_1_formattingData_time(await Saturday.findAll());
