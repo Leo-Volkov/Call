@@ -139,12 +139,6 @@ const UsersAdmin = sequelize.define(
   },
 )
 
-// ;(async () => { // эта строка существует для автоматизации создания таблиц в базе даных
-//   await sequelize.sync()  // Создаёт таблицы, если их нет
-//   await sequelize.sync({ alter: true })
-//   console.log('Таблицы созданы') //INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0')
-// })()
-
 // запросы
 // Отправка расписания пользователю
 app.get('/user/schedule', async (rep, res) => {
@@ -329,11 +323,6 @@ app.post('/admin/save_DB', async (rep, res) => {
   });
 
 })
-
-  // проверка функции
-  ; (async () => {
-    // received_1_formattingData_time(await Weekdays.findAll())
-  })() //
 
 // Функции
 function received_1_formattingData_time(table) {
