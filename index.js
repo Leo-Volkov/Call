@@ -139,9 +139,22 @@ const UsersAdmin = sequelize.define(
   },
 )
 
+; (async () => {
+  const ifShortenedDay = await Types.findOne({
+    attributes: ['id'],
+    where: {
+      type: 'shortenedDay',
+    },
+  });
+  if ( ifShortenedDay == null || ifShortenedDay.id  != 3 ) await sequelize.query("INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ('1', 'weekdays', '1'), ('2', 'saturday', '1'), ('3', 'shortenedDay', '0')");
+  await sequelize.sync(); // Создаёт таблицы, если их нет
+  await sequelize.sync({ alter: true });
+  console.log('Таблицы созданы'); 
+})()
+
 // запросы
 // Отправка расписания пользователю
-app.get('/user/schedule', async (rep, res) => {
+app.get('/user/schedule', async (rep, res) => { 
   let schedule_type = ''
 
   // получение типа расписаиния
@@ -219,10 +232,8 @@ app.post('/login/verification', async (req, res) => {
 // Отправка данных в админку
 app.get('/admin/schedule', async (rep, res) => {
   // эта строка существует для автоматизации создания таблиц в базе даных
-  await sequelize.sync(); // Создаёт таблицы, если их нет
-  await sequelize.sync({ alter: true });
-  await sequelize.query('INSERT INTO `types`(`id`, `type`, `enabled`) VALUES ("1", "weekdays", "1"), ("2", "saturday", "1"), ("3", "shortenedDay", "0")');
-  console.log('Таблицы созданы'); 
+  
+  
 
   const weekdays = received_1_formattingData_time(await Weekdays.findAll());
   const saturday = received_1_formattingData_time(await Saturday.findAll());

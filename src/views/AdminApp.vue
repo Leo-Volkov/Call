@@ -187,8 +187,8 @@ export default defineComponent({
       <h2 v-else-if="indexTables.name === 'shortenedDay'" class="shortenedDay_batten">
         <span class="check_table_shortenedDay form-check form-switch"
           @click="this.shortenedDay_enabled = !this.shortenedDay_enabled">
-          <input class="form-check-input" type="checkbox" role="switch" call_id="flexSwitchCheckDefault">
-          <label class="form-check-label" for="flexSwitchCheckDefault">Сокращённый день</label>
+          <input class="form-check-input" type="checkbox" role="switch" :checked="shortenedDay_enabled">
+          <label class="form-check-label" >Сокращённый день</label>
         </span>
       </h2>
 
