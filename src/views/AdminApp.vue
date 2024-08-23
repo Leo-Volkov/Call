@@ -188,7 +188,7 @@ export default defineComponent({
         <span class="check_table_shortenedDay form-check form-switch"
           @click="this.shortenedDay_enabled = !this.shortenedDay_enabled">
           <input class="form-check-input" type="checkbox" role="switch" :checked="shortenedDay_enabled">
-          <label class="form-check-label" >Сокращённый день</label>
+          <label class="form-check-label">Сокращённый день</label>
         </span>
       </h2>
 
@@ -261,7 +261,7 @@ export default defineComponent({
         </el-table>
       </el-radio-group>
 
-      
+
       <!-- https://sky.pro/wiki/html/obrabotka-sobytiya-vybora-fayla-v-html-input-type-file/ -->
     </section>
 
@@ -309,19 +309,20 @@ h2 {
   margin-top: 15px;
   margin-bottom: 10px;
   margin-left: 7px;
+
+  .check_table_shortenedDay {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding-left: 2em;
+
+    input {
+      padding-bottom: 10px;
+    }
+  }
 }
 
-h2 .check_table_shortenedDay {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  padding-left: 2em;
-}
-
-h2 .check_table_shortenedDay input {
-  padding-bottom: 10px;
-}
 
 .table_col,
 .melody_panel {
@@ -347,12 +348,12 @@ h2 .check_table_shortenedDay input {
   display: flex;
   justify-content: center;
   margin-top: 7px;
-}
 
-.table_button_panel .el-button {
-  width: 100%;
-  width: 10vw;
-  min-width: 145px;
+  .el-button {
+    width: 100%;
+    width: 10vw;
+    min-width: 145px;
+  }
 }
 
 .button_save {

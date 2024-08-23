@@ -184,25 +184,26 @@ h2 {
 header {
   margin: 10px;
   margin-top: 20px;
+
+  div {
+    font-size: 2vh;
+  }
+
+  .time {
+    text-align: center;
+    font-size: 2.6vh;
+  }
+
+  .date {
+    text-align: end;
+  }
+
+  .schedule {
+    text-align: center;
+    margin-top: 15px;
+  }
 }
 
-header div {
-  font-size: 2vh;
-}
-
-header .time {
-  text-align: center;
-  font-size: 2.6vh;
-}
-
-header .date {
-  text-align: end;
-}
-
-.schedule {
-  text-align: center;
-  margin-top: 15px;
-}
 
 .lesson,
 .change {
@@ -211,12 +212,12 @@ header .date {
   padding: 0 10px 0 10px;
   margin-bottom: 1px;
   font-size: 2vh;
+
+  .col {
+    padding: 10px;
+  }
 }
 
-.lesson .col,
-.change .col {
-  padding: 10px;
-}
 
 .peremena_text {
   font-size: 1.5vh;
