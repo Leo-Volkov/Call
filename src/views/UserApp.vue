@@ -54,8 +54,8 @@ export default {
     Call() {
       // Настоящее время
       const new_time = new Date()
-      // const time = `${this.CheckingZeroAdditionTime(new_time.getHours())}:${this.CheckingZeroAdditionTime(new_time.getMinutes())}`;
-      let time = '11:55'; //для проверки
+      const time = `${this.CheckingZeroAdditionTime(new_time.getHours())}:${this.CheckingZeroAdditionTime(new_time.getMinutes())}`;
+      // let time = '11:55'; //для проверки
 
       // Разбиваем время на часы и минуты
       const timeParts = time.split(':');
