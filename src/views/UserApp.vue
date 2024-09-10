@@ -7,7 +7,7 @@ export default {
     return {
       date: new Date(),
       new_timeMinutes: new Date(),
-      melodie: '',
+      audio: '',
       timeCall: {},
       timetable: [],
     }
@@ -15,28 +15,27 @@ export default {
 
   mounted() {
     this.add_DB(); // Отправка запроса на сервер
-
-    // событие проигрования звонка при нажатие на пробел
-    document.addEventListener('keydown', function (event) {
-      if (event.code == 'Space') {
-        this.playAudio()
-      };
-    });
-
   },
   methods: {
     // запуск звука звонка
     playAudio() {
-      const audio = document.querySelector("audio");
-      audio.play();
+      this.audio.play();
     },
 
     // Работа с серваком 
     async add_DB() {
       const response = await axios.get('/user/schedule');
-      this.melodie = response.data.melodie;
+      let audio = new Audio('../../public/Дзынь.mp3')
+      this.audio = audio
+      // this.audio = new Audio(response.data.melodie)
       this.timetable = response.data.timetable;
       this.timeCall = response.data.timeCall;
+
+      document.addEventListener('keydown', function (event) {
+        if (event.code == 'Space') {
+          audio.play();
+        };
+      });
       this.startTimer(); // запуск таймеров и проигрования звонков
     },
 
@@ -48,15 +47,15 @@ export default {
       }, 60000);
       window.setInterval(() => {
         this.date = new Date()
-      }, 1000);
+      }, 100);
     },
 
     // функция для вызова мелодии звонка по времени 
     Call() {
       // Настоящее время
       const new_time = new Date()
-      const time = `${this.CheckingZeroAdditionTime(new_time.getHours())}:${this.CheckingZeroAdditionTime(new_time.getMinutes())}`;
-      // let time = '13:00'; //для проверки
+      // const time = `${this.CheckingZeroAdditionTime(new_time.getHours())}:${this.CheckingZeroAdditionTime(new_time.getMinutes())}`;
+      let time = '11:55'; //для проверки
 
       // Разбиваем время на часы и минуты
       const timeParts = time.split(':');
@@ -159,7 +158,6 @@ export default {
   <!-- https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3  - спокойный -->
   <!-- https://alexbruni.ru/afx/sound_file/korotkiy-zvonok-shkolnogo-zvonka-35.mp3              - класичиский -->
   <!-- <audio :src="this.melodie"></audio> -->
-  <audio src="https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3"></audio>
 
 </template>
 
@@ -175,7 +173,7 @@ export default {
 }
 
 h2 {
-  font-size: 3vh;
+  font-size: 4.5vw;
   margin-top: 35px;
   margin-bottom: 20px;
   text-align: center;
@@ -209,9 +207,9 @@ header {
 .change {
   min-width: 300px;
   width: 100%;
-  padding: 0 10px 0 10px;
+  padding: 0 15px;
   margin-bottom: 1px;
-  font-size: 2vh;
+  font-size: 3.3vw;
 
   .col {
     padding: 10px;
@@ -220,18 +218,18 @@ header {
 
 
 .peremena_text {
-  font-size: 1.5vh;
+  font-size: 2.5vw;
 }
 
 .lesson {
   color: #ffffff;
   font-weight: 600;
-  height: 6vh;
+  height: 9vw;
   border-radius: 16px;
 }
 
 .change {
-  height: 3vh;
+  height: 4.4vw;
 }
 
 .schedule {
@@ -246,7 +244,7 @@ header {
 
 .button_call {
   margin: 20px;
-  height: 6vh;
+  height: 6vw;
   font-size: 2vw;
 }
 

@@ -257,7 +257,7 @@ app.get('/admin/schedule', async (rep, res) => {
     saturday,
     shortenedDay,
     melodies,
-    melodie_id: melodie_id[0].id,
+    melodie_id: melodie_id[0]?.id,
     shortenedDay_enabled: shortenedDay_enabled.enabled,
   })
 })

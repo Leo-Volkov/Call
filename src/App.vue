@@ -30,7 +30,7 @@ export default defineComponent({
 <style >
 * {
 	margin: 0;
-	/* padding: 0; */
+	padding: 0;
 }
 body {
   padding-bottom: 35px;
