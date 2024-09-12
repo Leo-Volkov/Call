@@ -10,11 +10,15 @@ export default {
       audio: '',
       timeCall: {},
       timetable: [],
+      time: '',
+      arrCall: [],
     }
   },
 
   mounted() {
     this.add_DB(); // Отправка запроса на сервер
+    this.time = `${this.CheckingZeroAdditionTime(this.date.getHours())}:${this.CheckingZeroAdditionTime(this.date.getMinutes())}:${this.CheckingZeroAdditionTime(this.date.getSeconds())}`;
+    this.callingAnEventCallPressingSpace()
   },
   methods: {
     // запуск звука звонка
@@ -25,47 +29,43 @@ export default {
     // Работа с серваком 
     async add_DB() {
       const response = await axios.get('/user/schedule');
-      let audio = new Audio('../../public/Дзынь.mp3')
-      this.audio = audio
+      this.audio = new Audio('../../public/Дзынь.mp3')
       // this.audio = new Audio(response.data.melodie)
       this.timetable = response.data.timetable;
       this.timeCall = response.data.timeCall;
+      this.startTimer(); // запуск таймеров и проигрования звонков
+    },
 
+    callingAnEventCallPressingSpace() {
       document.addEventListener('keydown', function (event) {
         if (event.code == 'Space') {
           audio.play();
         };
       });
-      this.startTimer(); // запуск таймеров и проигрования звонков
     },
 
     // запуск таймеров
-    async startTimer() {
+    startTimer() {
+      this.timetable.forEach(element => {
+        this.arrCall.push(element.end_time)
+        this.arrCall.push(element.start_time)
+      });
       this.Call()
-      window.setInterval(() => {
-        this.Call()
-      }, 60000);
+
       window.setInterval(() => {
         this.date = new Date()
-      }, 100);
+        this.time = `${this.CheckingZeroAdditionTime(this.date.getHours())}:${this.CheckingZeroAdditionTime(this.date.getMinutes())}:${this.CheckingZeroAdditionTime(this.date.getSeconds())}`;
+        // this.time = '11:54:00'; //для проверки
+        // this.time = prompt('введите время'); //для проверки
+        this.Call()
+      }, 1000);
     },
 
     // функция для вызова мелодии звонка по времени 
     Call() {
-      // Настоящее время
-      const new_time = new Date()
-      const time = `${this.CheckingZeroAdditionTime(new_time.getHours())}:${this.CheckingZeroAdditionTime(new_time.getMinutes())}`;
-      // let time = '11:55'; //для проверки
-
-      // Разбиваем время на часы и минуты
-      const timeParts = time.split(':');
-
-      // Преобразуем в минуты
-      this.new_timeMinutes = timeParts[0] * 60 + parseInt(timeParts[1]);
-
       // Проверка на проигрования звонка
-      this.timeCall.time.forEach(element => {
-        if (this.new_timeMinutes == element) { this.playAudio() };
+      this.arrCall.forEach(element => {
+        if (this.time == element) this.playAudio();
       })
     },
 
@@ -73,6 +73,11 @@ export default {
     timeEventListener_calls(index) {
       const start_Lesson = this.timeCall.timetable[index].start_Lesson;
       const end_Lesson = this.timeCall.timetable[index].end_Lesson;
+
+      // Разбиваем время на часы и минуты
+      const timeParts = this.time.split(':');
+      // Преобразуем в минуты
+      this.new_timeMinutes = timeParts[0] * 60 + parseInt(timeParts[1]) + parseInt(timeParts[2]);
 
       // Проверка на подстановку стилей
       switch (true) {
@@ -90,6 +95,10 @@ export default {
 
     // подсчёт времени на перемену
     peremena_time(index) { return this.timeCall.timetable[index + 1].start_Lesson - this.timeCall.timetable[index].end_Lesson },
+
+    conversion_to_time(time) {
+      return time.slice(0, 5)
+    },
   }
 };
 </script>
@@ -102,9 +111,7 @@ export default {
 
     <!-- Часы -->
     <div class="time col">
-      {{ CheckingZeroAdditionTime(this.date.getHours()) }}:
-      {{ CheckingZeroAdditionTime(this.date.getMinutes()) }}:
-      {{ CheckingZeroAdditionTime(this.date.getSeconds()) }}
+      {{ this.time }}
     </div>
 
     <!-- Дата -->
@@ -130,7 +137,7 @@ export default {
           <hr>
         </div>
         <div class="col-auto">
-          {{ element.start_time }}-{{ element.end_time }}
+          {{ conversion_to_time(element.start_time) }}-{{ conversion_to_time(element.end_time) }}
         </div>
       </el-row>
 

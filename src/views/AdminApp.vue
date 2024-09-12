@@ -168,7 +168,7 @@ export default defineComponent({
     },
     delete_melody(index) {
       this.melodies.splice(index, 1);
-    }
+    },
   }
 })
 </script>

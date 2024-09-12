@@ -182,11 +182,11 @@ app.get('/user/schedule', async (rep, res) => {
   // Получение расписания звонков
   let timetable
   if (schedule_type === 'ShortenedDay') {
-    timetable = received_1_formattingData_time(await ShortenedDay.findAll())
+    timetable = await ShortenedDay.findAll()
   } else if (schedule_type === 'Saturday') {
-    timetable = received_1_formattingData_time(await Saturday.findAll())
+    timetable = await Saturday.findAll()
   } else if (schedule_type === 'Weekdays') {
-    timetable = received_1_formattingData_time(await Weekdays.findAll())
+    timetable = await Weekdays.findAll()
   }
 
   // Получение милодии звонка
@@ -232,12 +232,9 @@ app.post('/login/verification', async (req, res) => {
 // Отправка данных в админку
 app.get('/admin/schedule', async (rep, res) => {
   // эта строка существует для автоматизации создания таблиц в базе даных
-  
-  
-
-  const weekdays = received_1_formattingData_time(await Weekdays.findAll());
-  const saturday = received_1_formattingData_time(await Saturday.findAll());
-  const shortenedDay = received_1_formattingData_time(await ShortenedDay.findAll());
+  const weekdays = conversion1_to_time(await Weekdays.findAll())
+  const saturday = conversion1_to_time(await Saturday.findAll())
+  const shortenedDay = conversion1_to_time(await ShortenedDay.findAll())
   const melodies = await Melodies.findAll();
   const melodie_id = await Melodies.findAll({
     attributes: ['id'],
@@ -263,9 +260,9 @@ app.get('/admin/schedule', async (rep, res) => {
 })
 
 app.post('/admin/save_DB', async (rep, res) => {
-  const weekdays = received_2_formattingData_time(rep.body.weekdays);
-  const saturday = received_2_formattingData_time(rep.body.saturday);
-  const shortenedDay = received_2_formattingData_time(rep.body.shortenedDay);
+  const weekdays = conversion2_to_time(rep.body.weekdays);
+  const saturday = conversion2_to_time(rep.body.saturday);
+  const shortenedDay = conversion2_to_time(rep.body.shortenedDay);
   const melodies = rep.body.melodies;
   const melodie_id = rep.body.melodie_id;
   const shortenedDay_enabled = rep.body.shortenedDay_enabled;
@@ -336,8 +333,7 @@ app.post('/admin/save_DB', async (rep, res) => {
 
 })
 
-// Функции
-function received_1_formattingData_time(table) {
+function conversion1_to_time(table) {
   table.forEach((element) => {
     element.start_time = element.start_time.slice(0, 5)
     element.end_time = element.end_time.slice(0, 5)
@@ -345,7 +341,7 @@ function received_1_formattingData_time(table) {
   return table
 }
 
-function received_2_formattingData_time(table) {
+function conversion2_to_time(table) {
   table.forEach((element) => {
     element.start_time = element.start_time + ':00'
     element.end_time = element.end_time + ':00'
@@ -354,7 +350,7 @@ function received_2_formattingData_time(table) {
 }
 
 function get_array_timetable_call(new_table) {
-  let table = received_1_formattingData_time(new_table)
+  let table = new_table
   const timeCall = {
     time: [],
     timetable: [],
