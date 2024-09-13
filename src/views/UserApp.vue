@@ -77,7 +77,7 @@ export default {
       // Разбиваем время на часы и минуты
       const timeParts = this.time.split(':');
       // Преобразуем в минуты
-      this.new_timeMinutes = timeParts[0] * 60 + parseInt(timeParts[1]) + parseInt(timeParts[2]);
+      this.new_timeMinutes = timeParts[0] * 60 + parseInt(timeParts[1]);
 
       // Проверка на подстановку стилей
       switch (true) {
