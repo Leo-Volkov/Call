@@ -27,7 +27,7 @@ export default {
 
     window.setInterval(() => {
       this.add_DB();
-      }, 600000);
+    }, 600000);
   },
 
   methods: {
