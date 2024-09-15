@@ -1,5 +1,4 @@
 <script>
-// const dayjs = require('dayjs')
 import axios from 'axios';
 
 export default {
@@ -18,47 +17,54 @@ export default {
   mounted() {
     this.add_DB(); // Отправка запроса на сервер
     this.time = `${this.CheckingZeroAdditionTime(this.date.getHours())}:${this.CheckingZeroAdditionTime(this.date.getMinutes())}:${this.CheckingZeroAdditionTime(this.date.getSeconds())}`;
-    this.callingAnEventCallPressingSpace()
+    this.startTimer(); // запуск таймеров и проигрования звонков
+
+    document.addEventListener('keydown', (event) => {
+      if (event.code == 'Space') {
+        this.playAudio();
+      };
+    });
+
+    window.setInterval(() => {
+      this.add_DB();
+      // }, 600000);
+    }, 6000);
   },
+
   methods: {
     // запуск звука звонка
     playAudio() {
       this.audio.play();
     },
 
-    // Работа с серваком 
     async add_DB() {
       const response = await axios.get('/user/schedule');
       this.audio = new Audio('../../public/Дзынь.mp3')
       // this.audio = new Audio(response.data.melodie)
       this.timetable = response.data.timetable;
       this.timeCall = response.data.timeCall;
-      this.startTimer(); // запуск таймеров и проигрования звонков
+
+      if (response.data.timetable != undefined) {
+        // Заполнение массива с временем звонка
+        this.timetable.forEach(element => {
+          this.arrCall.push(element.end_time)
+          this.arrCall.push(element.start_time)
+        });
+      }
     },
 
-    callingAnEventCallPressingSpace() {
-      document.addEventListener('keydown', function (event) {
-        if (event.code == 'Space') {
-          audio.play();
-        };
-      });
-    },
 
     // запуск таймеров
     startTimer() {
-      this.timetable.forEach(element => {
-        this.arrCall.push(element.end_time)
-        this.arrCall.push(element.start_time)
-      });
-      this.Call()
 
       window.setInterval(() => {
         this.date = new Date()
         this.time = `${this.CheckingZeroAdditionTime(this.date.getHours())}:${this.CheckingZeroAdditionTime(this.date.getMinutes())}:${this.CheckingZeroAdditionTime(this.date.getSeconds())}`;
-        // this.time = '11:54:00'; //для проверки
-        // this.time = prompt('введите время'); //для проверки
+        // this.time = '11:45:00'; //для проверки
+        // this.time = prompt('введите время', '11:45:00'); //для проверки
         this.Call()
       }, 1000);
+
     },
 
     // функция для вызова мелодии звонка по времени 
@@ -106,15 +112,12 @@ export default {
 
 <template>
   <header class="row">
-    <!-- Название организации -->
     <div class="name_college col">Басовская</div>
 
-    <!-- Часы -->
     <div class="time col">
       {{ this.time }}
     </div>
 
-    <!-- Дата -->
     <div class="date col">
       {{ CheckingZeroAdditionTime(this.date.getDate()) }}.
       {{ CheckingZeroAdditionTime(this.date.getMonth() + 1) }}.
@@ -154,18 +157,7 @@ export default {
         </div>
       </el-row>
     </div>
-
-    <!-- <button type="button" class="button_call btn btn-secondary" @click="playAudio()">
-            Звонить
-        </button> -->
   </el-container>
-
-  <!-- Проигрователь музыки -->
-  <!-- https://alexbruni.ru/afx/sound_file/zvon-shkolnogo-kolokolchika-posledniy-zvonok-66.mp3  - колокольчик -->
-  <!-- https://alexbruni.ru/afx/sound_file/zvuk-yaponskogo-shkolnogo-zvonka-elektronnyy-77.mp3  - спокойный -->
-  <!-- https://alexbruni.ru/afx/sound_file/korotkiy-zvonok-shkolnogo-zvonka-35.mp3              - класичиский -->
-  <!-- <audio :src="this.melodie"></audio> -->
-
 </template>
 
 

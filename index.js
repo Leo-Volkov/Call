@@ -198,7 +198,7 @@ app.get('/user/schedule', async (rep, res) => {
   })
   const timeCall = get_array_timetable_call(timetable)
   // Отправка данных пользователю
-  res.send({ melodie: melodie[0].title, timetable: timetable, timeCall })
+  res.send({ melodie: melodie[0].title, timetable, timeCall })
 })
 
 // Индификация на прова к администрации
