@@ -59,7 +59,7 @@ export default {
       window.setInterval(() => {
         this.date = new Date()
         this.time = `${this.CheckingZeroAdditionTime(this.date.getHours())}:${this.CheckingZeroAdditionTime(this.date.getMinutes())}:${this.CheckingZeroAdditionTime(this.date.getSeconds())}`;
-        // this.time = '11:45:00'; //для проверки
+        // this.time = '12:40:00'; //для проверки
         // this.time = prompt('введите время', '11:45:00'); //для проверки
         this.Call()
       }, 1000);
@@ -93,6 +93,22 @@ export default {
         case start_Lesson > this.new_timeMinutes:
           return "planet";
       };
+    },
+
+    timeEventListener_peremen(index) {
+      const start_Lesson = this.timeCall.timetable[index + 1]?.start_Lesson;
+      const end_Lesson = this.timeCall.timetable[index].end_Lesson;
+
+      // Разбиваем время на часы и минуты
+      const timeParts = this.time.split(':');
+      // Преобразуем в минуты
+      this.new_timeMinutes = timeParts[0] * 60 + parseInt(timeParts[1]);
+
+      // Проверка на подстановку стилей
+      if (end_Lesson <= this.new_timeMinutes && this.new_timeMinutes < start_Lesson) {
+        return 'active';
+      }
+      return '';
     },
 
     // Делает формат врепни правельнм 
@@ -143,14 +159,15 @@ export default {
         </div>
       </el-row>
 
-      <el-row v-if="element.call_id != this.timetable.length" class="change container align-items-center ">
+      <el-row v-if="element.call_id != this.timetable.length" class="change container align-items-center peremen"
+        :class="timeEventListener_peremen(index)">
         <div class="col">
           <hr>
         </div>
-        <div class="peremena_text col-auto">
+        <p class="peremena_text col-auto">
           {{ peremena_time(index) }}
           мин
-        </div>
+        </p>
         <div class="col">
           <hr>
         </div>
@@ -214,6 +231,10 @@ header {
   }
 }
 
+.peremen {
+  border-radius: 25px;
+  border: 2px solid #ffffff;
+}
 
 .peremena_text {
   font-size: 2.5vw;
@@ -253,6 +274,9 @@ header {
 
 .active {
   background-color: rgb(255, 145, 0);
+  p {
+    color: #ffffff;
+  }
 }
 
 .planet {

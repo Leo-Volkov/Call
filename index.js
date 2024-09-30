@@ -1,4 +1,4 @@
-// Инпорт библеотек
+// Импорт библиотек
 // const dayjs = require('dayjs')
 const express = require(`express`)
 const app = express()
@@ -172,7 +172,7 @@ app.get('/user/schedule', async (rep, res) => {
       schedule_type = 'Saturday'
     } else if (Dat.getDay() == 0) {
       // Воскрисение: звонки и расписание отключено
-      res.send()
+      res.send() 
       return
     } else {
       schedule_type = 'Weekdays'
