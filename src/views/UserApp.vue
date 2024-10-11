@@ -24,10 +24,6 @@ export default {
         this.playAudio();
       };
     });
-
-    window.setInterval(() => {
-      this.add_DB();
-    }, 600000);
   },
 
   methods: {
@@ -37,31 +33,61 @@ export default {
     },
 
     async add_DB() {
-      const response = await axios.get('/user/schedule');
-      this.audio = new Audio('../../public/Дзынь.mp3')
-      // this.audio = new Audio(response.data.melodie)
-      this.timetable = response.data.timetable;
-      this.timeCall = response.data.timeCall;
+      try {
+        const response = await axios.get('/user/schedule');
+        this.audio = new Audio('../../public/Дзынь.mp3')
+        // this.audio = new Audio(response.data.melodie)
+        this.timetable = response.data.timetable;
+        this.timeCall = response.data.timeCall;
 
-      if (response.data.timetable != undefined) {
-        // Заполнение массива с временем звонка
-        this.timetable.forEach(element => {
-          this.arrCall.push(element.end_time)
-          this.arrCall.push(element.start_time)
-        });
+        if (response.data.timetable != undefined) {
+          // Заполнение массива с временем звонка
+          this.timetable.forEach(element => {
+            this.arrCall.push(element.end_time)
+            this.arrCall.push(element.start_time)
+          });
+        }
+        console.log("200");
+      } catch {
+        let Dat = new Date()
+        if (Dat.getDay() == 6) {
+          // Суббота
+          this.timetable = JSON.parse(`[{"call_id":1,"enabled":true,"start_time":"09:00:00","end_time":"09:45:00"},{"call_id":2,"enabled":true,"start_time":"09:55:00","end_time":"10:40:00"},{"call_id":3,"enabled":true,"start_time":"11:00:00","end_time":"11:45:00"},{"call_id":4,"enabled":true,"start_time":"11:55:00","end_time":"12:40:00"},{"call_id":5,"enabled":true,"start_time":"12:50:00","end_time":"13:35:00"},{"call_id":6,"enabled":true,"start_time":"13:45:00","end_time":"14:30:00"},{"call_id":7,"enabled":true,"start_time":"14:40:00","end_time":"15:25:00"},{"call_id":8,"enabled":true,"start_time":"15:35:00","end_time":"16:20:00"},{"call_id":9,"enabled":true,"start_time":"16:30:00","end_time":"17:15:00"},{"call_id":10,"enabled":true,"start_time":"17:25:00","end_time":"18:10:00"}]`);
+          this.timeCall = JSON.parse(`{"time":[1035,1045,1090,540,585,595,640,660,705,715,760,770,815,825,870,880,925,935,980,990],"timetable":[{"start_Lesson":540,"end_Lesson":585},{"start_Lesson":595,"end_Lesson":640},{"start_Lesson":660,"end_Lesson":705},{"start_Lesson":715,"end_Lesson":760},{"start_Lesson":770,"end_Lesson":815},{"start_Lesson":825,"end_Lesson":870},{"start_Lesson":880,"end_Lesson":925},{"start_Lesson":935,"end_Lesson":980},{"start_Lesson":990,"end_Lesson":1035},{"start_Lesson":1045,"end_Lesson":1090}]}`);
+        } else if (Dat.getDay() == 0) {
+          // Воскрисение: звонки и расписание отключено
+          return
+        } else {
+          // Weekdays
+          this.timetable = JSON.parse(`[{"call_id":1,"enabled":true,"start_time":"09:00:00","end_time":"09:45:00"},{"call_id":2,"enabled":true,"start_time":"09:55:00","end_time":"10:40:00"},{"call_id":3,"enabled":true,"start_time":"11:00:00","end_time":"11:45:00"},{"call_id":4,"enabled":true,"start_time":"11:55:00","end_time":"12:40:00"},{"call_id":5,"enabled":true,"start_time":"13:00:00","end_time":"13:45:00"},{"call_id":6,"enabled":true,"start_time":"14:05:00","end_time":"14:50:00"},{"call_id":7,"enabled":true,"start_time":"15:10:00","end_time":"15:55:00"},{"call_id":8,"enabled":true,"start_time":"16:05:00","end_time":"16:50:00"},{"call_id":9,"enabled":true,"start_time":"17:00:00","end_time":"17:45:00"},{"call_id":10,"enabled":true,"start_time":"17:55:00","end_time":"18:40:00"},{"call_id":11,"enabled":true,"start_time":"18:50:00","end_time":"19:35:00"}]`);
+          this.timeCall = JSON.parse(`{"time":[1010,1020,1065,1075,1120,1130,1175,540,585,595,640,660,705,715,760,780,825,845,890,910,955,965],"timetable":[{"start_Lesson":540,"end_Lesson":585},{"start_Lesson":595,"end_Lesson":640},{"start_Lesson":660,"end_Lesson":705},{"start_Lesson":715,"end_Lesson":760},{"start_Lesson":780,"end_Lesson":825},{"start_Lesson":845,"end_Lesson":890},{"start_Lesson":910,"end_Lesson":955},{"start_Lesson":965,"end_Lesson":1010},{"start_Lesson":1020,"end_Lesson":1065},{"start_Lesson":1075,"end_Lesson":1120},{"start_Lesson":1130,"end_Lesson":1175}]}`);
+        }
+
+        this.audio = new Audio('../../public/Дзынь.mp3')
+        if (this.timetable != undefined) {
+          // Заполнение массива с временем звонка
+          this.timetable.forEach(element => {
+            this.arrCall.push(element.end_time)
+            this.arrCall.push(element.start_time)
+          });
+        }
+        console.log("400");
       }
     },
 
 
     // запуск таймеров
     startTimer() {
-
       window.setInterval(() => {
         this.date = new Date()
         this.time = `${this.CheckingZeroAdditionTime(this.date.getHours())}:${this.CheckingZeroAdditionTime(this.date.getMinutes())}:${this.CheckingZeroAdditionTime(this.date.getSeconds())}`;
         // this.time = '12:40:00'; //для проверки
         // this.time = prompt('введите время', '11:45:00'); //для проверки
         this.Call()
+
+        if (this.time == '00:00:00') {
+          this.add_DB();
+        }
       }, 1000);
 
     },
@@ -274,6 +300,7 @@ header {
 
 .active {
   background-color: rgb(255, 145, 0);
+
   p {
     color: #ffffff;
   }
